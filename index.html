@@ -347,7 +347,7 @@
       <button class="app-tab active" data-apptab="training" onclick="setAppTab('training')">Training</button>
       <button class="app-tab" data-apptab="protokoll" onclick="setAppTab('protokoll')">Trainingsprotokoll</button>
       <button class="app-tab" data-apptab="ernaehrung" onclick="setAppTab('ernaehrung')">Ernährung</button>
-      <button class="app-tab" data-apptab="einkaufsliste" onclick="setAppTab('einkaufsliste')">Rezepte &amp; Einkaufsliste</button>
+      <button class="app-tab" data-apptab="einkaufsliste" onclick="setAppTab('einkaufsliste')">Rezepte</button>
       <button class="app-tab" data-apptab="uebungsliste" onclick="setAppTab('uebungsliste')">Übungsliste</button>
     </div>
   </div>
@@ -913,23 +913,205 @@
 <div class="app-tab-panel" data-apptab="ernaehrung" style="display:none;">
 <section>
   <h2>Ernährung</h2>
-  <div class="nutriday">
-    <h3>Bürotage <span class="badge">ohne Rad</span></h3>
-    <p class="meal"><b>Morgens:</b> Kaffee + kleiner Snack vor dem Mittag — Skyr oder Quark mit Nüssen, oder ein vorgekochtes Ei.</p>
-    <p class="meal"><b>Mittag:</b> wie gewohnt — Haferflocken + Quark + Obst + Honig.</p>
-    <p class="meal"><b>Abend:</b> vorgekochtes Hähnchen oder Lachs + Reis/Vollkornnudeln + Gemüse.</p>
+
+  <div class="variant-bar">
+    <div class="variant-tabs">
+      <button class="variant-tab meal-week-tab" data-week="w1" onclick="setMealWeek('w1')">Woche 1 · Hähnchen</button>
+      <button class="variant-tab meal-week-tab" data-week="w2" onclick="setMealWeek('w2')">Woche 2 · Lachs</button>
+      <button class="variant-tab meal-week-tab" data-week="w3" onclick="setMealWeek('w3')">Woche 3 · Vegetarisch</button>
+    </div>
+    <p class="variant-note">Rotationsprinzip: 3 Wochen im Wechsel für Abwechslung bei Frühstück, Abendessen und Erholungs-Schüssel — Struktur und Timing bleiben gleich. <span id="auto-note-meal"></span></p>
   </div>
-  <div class="nutriday">
-    <h3>Fahr-/Lauftage <span class="badge ride">Training</span></h3>
-    <p class="meal"><b>Vorher:</b> Banane oder Datteln 30–60 Min vorher, wenn direkt nach der Arbeit trainiert wird.</p>
-    <p class="meal"><b>Danach:</b> Erholungs-Schüssel (Quark + Haferflocken + Banane + Honig + Nüsse) innerhalb einer Stunde.</p>
+
+  <div class="meal-week-block" data-week="w1">
+    <div class="nutriday">
+      <h3>Mo <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Skyr mit Nüssen und TK-Beeren.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt — Haferflocken + Magerquark + Obst + Honig.</p>
+      <p class="meal"><b>Abend:</b> Hähnchen + Reis + Gemüse (vorgekocht, siehe „Aufwärm-Abendessen" im Rezepte-Tab).</p>
+    </div>
+    <div class="nutriday">
+      <h3>Di <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Skyr mit Nüssen und Beeren.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Hähnchen + Reis + Gemüse (Reste).</p>
+    </div>
+    <div class="nutriday">
+      <h3>Mi <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln 30–60 Min vor der Ausfahrt.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel (Quark + Haferflocken + Banane + Honig + Nüsse) innerhalb einer Stunde.</p>
+      <p class="meal"><b>Abend:</b> Hähnchen + Reis + Gemüse.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Do <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel.</p>
+      <p class="meal"><b>Abend:</b> Letzte Portion Hähnchen + Reis + Gemüse.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Fr <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Skyr mit Nüssen.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Etwas Leichteres oder Reste — Wochenende steht bevor.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Sa/So <span class="badge ride">Langer Ausritt</span></h3>
+      <p class="meal"><b>Vorher:</b> Richtiges kohlenhydrathaltiges Frühstück, nicht nur Kaffee.</p>
+      <p class="meal"><b>Während:</b> Datteln/Banane + Elektrolytflasche ab ~90 Min.</p>
+      <p class="meal"><b>Danach:</b> Sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
+    </div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;margin:20px 0 12px;">Einkaufsliste für diese Woche</h3>
+    <div class="shoplist">
+      <div class="store"><h3>Milchprodukte & Eiweiß</h3><ul>
+        <li><input type="checkbox"/> Skyr, 2–3 Becher</li>
+        <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
+        <li><input type="checkbox"/> Hähnchenbrust, 400–500 g</li>
+      </ul></div>
+      <div class="store"><h3>Getreide & Vorrat</h3><ul>
+        <li><input type="checkbox"/> Haferflocken (kernig)</li>
+        <li><input type="checkbox"/> Reis</li>
+        <li><input type="checkbox"/> Honig</li>
+        <li><input type="checkbox"/> Datteln</li>
+      </ul></div>
+      <div class="store"><h3>Obst, Gemüse & TK</h3><ul>
+        <li><input type="checkbox"/> Bananen</li>
+        <li><input type="checkbox"/> TK-Beerenmischung</li>
+        <li><input type="checkbox"/> Saisonales Gemüse</li>
+        <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
+      </ul></div>
+      <div class="store"><h3>Extras</h3><ul>
+        <li><input type="checkbox"/> Mandeln/Walnüsse</li>
+        <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
+      </ul></div>
+    </div>
   </div>
-  <div class="nutriday">
-    <h3>Langer Ausritt <span class="badge ride">100 km+</span></h3>
-    <p class="meal"><b>Vorher:</b> richtiges kohlenhydrathaltiges Frühstück, nicht nur Kaffee.</p>
-    <p class="meal"><b>Während:</b> Datteln/Banane + Elektrolytflasche ab ~90 Min.</p>
-    <p class="meal"><b>Danach:</b> sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
+
+  <div class="meal-week-block" data-week="w2">
+    <div class="nutriday">
+      <h3>Mo <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Magerquark-Schüssel mit Nüssen und Beeren (siehe Rezept).</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt — Haferflocken + Magerquark + Obst + Honig.</p>
+      <p class="meal"><b>Abend:</b> Lachs + Vollkornnudeln + Gemüse (vorgekocht, siehe „Aufwärm-Abendessen" im Rezepte-Tab).</p>
+    </div>
+    <div class="nutriday">
+      <h3>Di <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Magerquark-Schüssel mit Nüssen und Beeren.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Lachs + Vollkornnudeln + Gemüse (Reste).</p>
+    </div>
+    <div class="nutriday">
+      <h3>Mi <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln 30–60 Min vor der Ausfahrt.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel — diese Woche mit Skyr statt Quark für Abwechslung.</p>
+      <p class="meal"><b>Abend:</b> Lachs + Vollkornnudeln + Gemüse.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Do <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel.</p>
+      <p class="meal"><b>Abend:</b> Letzte Portion Lachs + Nudeln + Gemüse.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Fr <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Magerquark-Schüssel.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Etwas Leichteres oder Reste — Wochenende steht bevor.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Sa/So <span class="badge ride">Langer Ausritt</span></h3>
+      <p class="meal"><b>Vorher:</b> Richtiges kohlenhydrathaltiges Frühstück, nicht nur Kaffee.</p>
+      <p class="meal"><b>Während:</b> Datteln/Banane + Elektrolytflasche ab ~90 Min.</p>
+      <p class="meal"><b>Danach:</b> Sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
+    </div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;margin:20px 0 12px;">Einkaufsliste für diese Woche</h3>
+    <div class="shoplist">
+      <div class="store"><h3>Milchprodukte & Eiweiß</h3><ul>
+        <li><input type="checkbox"/> Magerquark (Milsani/Milbona), reichlich</li>
+        <li><input type="checkbox"/> Skyr, 2 Becher</li>
+        <li><input type="checkbox"/> TK-Lachsfilet, 2 Packungen</li>
+      </ul></div>
+      <div class="store"><h3>Getreide & Vorrat</h3><ul>
+        <li><input type="checkbox"/> Haferflocken (kernig)</li>
+        <li><input type="checkbox"/> Vollkornnudeln</li>
+        <li><input type="checkbox"/> Honig</li>
+        <li><input type="checkbox"/> Datteln</li>
+      </ul></div>
+      <div class="store"><h3>Obst, Gemüse & TK</h3><ul>
+        <li><input type="checkbox"/> Bananen</li>
+        <li><input type="checkbox"/> TK-Beerenmischung</li>
+        <li><input type="checkbox"/> Saisonales Gemüse</li>
+      </ul></div>
+      <div class="store"><h3>Extras</h3><ul>
+        <li><input type="checkbox"/> Mandeln/Walnüsse</li>
+        <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
+      </ul></div>
+    </div>
   </div>
+
+  <div class="meal-week-block" data-week="w3">
+    <div class="nutriday">
+      <h3>Mo <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Vorgekochtes Ei + Gemüsesticks.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt — Haferflocken + Magerquark + Obst + Honig.</p>
+      <p class="meal"><b>Abend:</b> Linsen-Bulgur-Pfanne (siehe Rezepte-Tab) + Gemüse.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Di <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Vorgekochtes Ei + Gemüsesticks.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Linsen-Bulgur-Pfanne (Reste).</p>
+    </div>
+    <div class="nutriday">
+      <h3>Mi <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln 30–60 Min vor der Ausfahrt.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel — diese Woche mit Apfel und Zimt statt Banane.</p>
+      <p class="meal"><b>Abend:</b> Linsen-Bulgur-Pfanne.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Do <span class="badge ride">Radsportgruppe</span></h3>
+      <p class="meal"><b>Vorher:</b> Banane oder Datteln.</p>
+      <p class="meal"><b>Danach:</b> Erholungs-Schüssel.</p>
+      <p class="meal"><b>Abend:</b> Letzte Portion Linsen-Bulgur-Pfanne.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Fr <span class="badge">Bürotag</span></h3>
+      <p class="meal"><b>Morgens:</b> Vorgekochtes Ei + Gemüsesticks.</p>
+      <p class="meal"><b>Mittag:</b> wie gewohnt.</p>
+      <p class="meal"><b>Abend:</b> Etwas Leichteres oder Reste — Wochenende steht bevor.</p>
+    </div>
+    <div class="nutriday">
+      <h3>Sa/So <span class="badge ride">Langer Ausritt</span></h3>
+      <p class="meal"><b>Vorher:</b> Richtiges kohlenhydrathaltiges Frühstück, nicht nur Kaffee.</p>
+      <p class="meal"><b>Während:</b> Datteln/Banane + Elektrolytflasche ab ~90 Min.</p>
+      <p class="meal"><b>Danach:</b> Sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
+    </div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;margin:20px 0 12px;">Einkaufsliste für diese Woche</h3>
+    <div class="shoplist">
+      <div class="store"><h3>Milchprodukte & Eiweiß</h3><ul>
+        <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
+        <li><input type="checkbox"/> Eier, 10er</li>
+      </ul></div>
+      <div class="store"><h3>Getreide & Vorrat</h3><ul>
+        <li><input type="checkbox"/> Haferflocken (kernig)</li>
+        <li><input type="checkbox"/> Bulgur</li>
+        <li><input type="checkbox"/> Linsen oder Kichererbsen (Glas/Dose)</li>
+        <li><input type="checkbox"/> Honig</li>
+        <li><input type="checkbox"/> Datteln</li>
+      </ul></div>
+      <div class="store"><h3>Obst, Gemüse & TK</h3><ul>
+        <li><input type="checkbox"/> Bananen</li>
+        <li><input type="checkbox"/> Äpfel</li>
+        <li><input type="checkbox"/> Paprika/Zucchini/Karotten</li>
+        <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
+      </ul></div>
+      <div class="store"><h3>Extras</h3><ul>
+        <li><input type="checkbox"/> Mandeln/Walnüsse</li>
+        <li><input type="checkbox"/> Zimt</li>
+        <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
+      </ul></div>
+    </div>
+  </div>
+
 </section>
 </div>
 
@@ -1011,37 +1193,32 @@
       </div>
     </div>
   </div>
-</section>
-<section>
-  <h2>Einkaufsliste — Aldi &amp; Lidl</h2>
-  <div class="shoplist">
-    <div class="store"><h3>Milchprodukte &amp; Eiweiß</h3><ul>
-      <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
-      <li><input type="checkbox"/> Skyr, 2–3 Becher</li>
-      <li><input type="checkbox"/> Eier, 10er</li>
-      <li><input type="checkbox"/> Hähnchenbrust</li>
-      <li><input type="checkbox"/> TK-Lachsfilet</li>
-      <li><input type="checkbox"/> Thunfisch in Dosen</li>
-    </ul></div>
-    <div class="store"><h3>Getreide &amp; Vorrat</h3><ul>
-      <li><input type="checkbox"/> Haferflocken (kernig)</li>
-      <li><input type="checkbox"/> Reis oder Vollkornnudeln</li>
-      <li><input type="checkbox"/> Linsen/Kichererbsen</li>
-      <li><input type="checkbox"/> Honig</li>
-      <li><input type="checkbox"/> Datteln</li>
-    </ul></div>
-    <div class="store"><h3>Obst, Gemüse &amp; TK</h3><ul>
-      <li><input type="checkbox"/> Bananen</li>
-      <li><input type="checkbox"/> TK-Beerenmischung</li>
-      <li><input type="checkbox"/> Spinat</li>
-      <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
-      <li><input type="checkbox"/> Saisonales Gemüse</li>
-    </ul></div>
-    <div class="store"><h3>Extras</h3><ul>
-      <li><input type="checkbox"/> Mandeln/Walnüsse</li>
-      <li><input type="checkbox"/> Chiasamen oder Leinsamen</li>
-      <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
-    </ul></div>
+  <div class="recipe">
+    <span class="when">Vorkochen · vegetarisch · reicht für 3–4 Portionen</span>
+    <h3>Linsen-Bulgur-Pfanne</h3>
+    <p>Vegetarische Abwechslung zum Hähnchen/Lachs-Abendessen — genauso batch-cookbar und gut zum Aufwärmen nach einer Ausfahrt.</p>
+    <div class="recipe-cols">
+      <div>
+        <h4>Zutaten (3–4 Portionen)</h4>
+        <ul>
+          <li>200 g Bulgur</li>
+          <li>1 Glas/Dose Linsen oder Kichererbsen (ca. 400 g)</li>
+          <li>1 Zwiebel, 2 Knoblauchzehen</li>
+          <li>1 Portion Gemüse (Paprika, Zucchini, Karotten o. ä., saisonal)</li>
+          <li>Salz, Pfeffer, Paprikapulver, Kreuzkümmel</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Zubereitung</h4>
+        <ol>
+          <li>Bulgur nach Packungsanweisung in Wasser oder Brühe quellen lassen.</li>
+          <li>Zwiebel und Knoblauch anbraten, Gemüse dazugeben und mitbraten.</li>
+          <li>Linsen/Kichererbsen abgießen, dazugeben und kurz mit erwärmen.</li>
+          <li>Mit dem Bulgur vermischen und würzen.</li>
+          <li>In Portionsboxen im Kühlschrank lagern (3–4 Tage haltbar), abends nur aufwärmen.</li>
+        </ol>
+      </div>
+    </div>
   </div>
 </section>
 </div>
@@ -1270,6 +1447,11 @@ function setAppTab(tab){
   window.scrollTo(0, 0);
 }
 
+function setMealWeek(week){
+  document.querySelectorAll('.meal-week-block').forEach(b=> b.style.display = (b.dataset.week===week ? '' : 'none'));
+  document.querySelectorAll('.meal-week-tab').forEach(b=> b.classList.toggle('active', b.dataset.week===week));
+}
+
 let CURRENT_WEEK_KEY = '';
 
 (function init(){
@@ -1292,6 +1474,13 @@ let CURRENT_WEEK_KEY = '';
 
   document.getElementById('auto-note-in').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + IN_LABELS[variantInResolved] + '.';
   document.getElementById('auto-note-off').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + OFF_LABELS[variantOffResolved] + '.';
+
+  const MEAL_WEEKS = ['w1','w2','w3'];
+  const MEAL_LABELS = {w1:'Woche 1', w2:'Woche 2', w3:'Woche 3'};
+  const mealWeekResolved = MEAL_WEEKS[(iso.week-1) % 3];
+  setMealWeek(mealWeekResolved);
+  const autoNoteMeal = document.getElementById('auto-note-meal');
+  if(autoNoteMeal) autoNoteMeal.textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + MEAL_LABELS[mealWeekResolved] + '.';
 
   // Fortschritt je echter Kalenderwoche speichern, unabhängig von der gewählten Variante.
   // localStorage ist pro Gerät/Browser — kein automatischer Sync zwischen Handy und Laptop
