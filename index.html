@@ -89,6 +89,7 @@
 
   .daylabel{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;width:66px;flex-shrink:0;padding-top:2px;color:var(--road);}
   .daylabel small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;}
+  .daylabel small.day-duration{color:var(--road-dim);font-weight:600;}
   .daybody{flex:1;}
 
   @media (max-width:600px){
@@ -1346,6 +1347,26 @@ let CURRENT_WEEK_KEY = '';
   });
   window.__commitDayBox = commitDayBox;
   loadState();
+})();
+
+// --- Trainingsdauer neben dem Wochentag anzeigen (aus data-hours je Tag) ---
+(function addDayDurations(){
+  function formatDuration(h){
+    if(!h || h <= 0) return null;
+    if(h < 1) return Math.round(h * 60) + ' Min';
+    const rounded = Math.round(h * 10) / 10;
+    return rounded.toString().replace('.', ',') + ' Std.';
+  }
+  document.querySelectorAll('.day[data-hours]').forEach(day => {
+    const label = formatDuration(parseFloat(day.dataset.hours));
+    if(!label) return;
+    const daylabel = day.querySelector('.daylabel');
+    if(!daylabel) return;
+    const span = document.createElement('small');
+    span.className = 'day-duration';
+    span.textContent = label;
+    daylabel.appendChild(span);
+  });
 })();
 
 // --- Übungs-Details (Klick auf eine Übung öffnet das Modal) ---
