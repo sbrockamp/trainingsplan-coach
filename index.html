@@ -123,6 +123,16 @@
   .modal-tip{background:var(--go-dim);border-radius:8px;padding:10px 12px;font-size:13.5px;color:#1d4f3a;margin-top:14px;}
   .modal-tip b{color:var(--go);}
 
+  .modal-timer{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:center;}
+  .modal-timer .timer-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .modal-timer .timer-display{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--road);line-height:1;font-variant-numeric:tabular-nums;transition:color .2s;}
+  .modal-timer.done .timer-display{color:var(--go);}
+  .modal-timer .timer-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .timer-btn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13.5px;border:1px solid var(--line);background:#fff;color:var(--road);border-radius:8px;padding:8px 14px;cursor:pointer;}
+  .timer-btn.primary{background:var(--road);color:#fff;border-color:var(--road);min-width:84px;}
+  .timer-btn.primary.running{background:var(--kom);border-color:var(--kom);}
+  .timer-btn:active{transform:scale(.96);}
+
   details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:10px;}
   details summary{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15.5px;cursor:pointer;outline:none;}
   details p, details ul{font-size:14px;color:var(--ink);line-height:1.55;}
@@ -937,6 +947,16 @@
       <ul id="ex-modal-mistakes"></ul>
     </div>
     <div class="modal-tip"><b>Tipp:</b> <span id="ex-modal-tip"></span></div>
+    <div class="modal-timer" id="ex-modal-timer">
+      <div class="timer-label" id="ex-timer-label">Timer</div>
+      <div class="timer-display" id="ex-timer-display">00:60</div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="ex-timer-minus" aria-label="15 Sekunden weniger">−15s</button>
+        <button class="timer-btn primary" id="ex-timer-startpause">Start</button>
+        <button class="timer-btn" id="ex-timer-plus" aria-label="15 Sekunden mehr">+15s</button>
+        <button class="timer-btn" id="ex-timer-reset" aria-label="Timer zurücksetzen">↺</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1094,7 +1114,109 @@ const EX_DATA = {
   const mistakesEl = document.getElementById('ex-modal-mistakes');
   const tipEl = document.getElementById('ex-modal-tip');
 
-  function openExercise(key){
+  const timerBox = document.getElementById('ex-modal-timer');
+  const timerLabel = document.getElementById('ex-timer-label');
+  const timerDisplay = document.getElementById('ex-timer-display');
+  const timerStartPause = document.getElementById('ex-timer-startpause');
+  const timerMinus = document.getElementById('ex-timer-minus');
+  const timerPlus = document.getElementById('ex-timer-plus');
+  const timerReset = document.getElementById('ex-timer-reset');
+
+  let timerDefault = 60;
+  let timerRemaining = 60;
+  let timerInterval = null;
+  let audioCtx = null;
+
+  function parseDefaultSeconds(detailText){
+    if(!detailText) return null;
+    const m = detailText.match(/(\d+)(?:\s*[–-]\s*(\d+))?\s*Sek/);
+    if(!m) return null;
+    return m[2] ? parseInt(m[2], 10) : parseInt(m[1], 10);
+  }
+
+  function formatTime(s){
+    const mm = Math.floor(s / 60).toString().padStart(2, '0');
+    const ss = (s % 60).toString().padStart(2, '0');
+    return mm + ':' + ss;
+  }
+
+  function renderTimer(){
+    timerDisplay.textContent = formatTime(timerRemaining);
+  }
+
+  function primeAudio(){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+    }catch(e){}
+  }
+
+  function beep(){
+    try{
+      if(!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.5);
+    }catch(e){}
+    if(navigator.vibrate){ try{ navigator.vibrate([200,100,200]); }catch(e){} }
+  }
+
+  function stopInterval(){
+    if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+    timerStartPause.textContent = 'Start';
+    timerStartPause.classList.remove('running');
+  }
+
+  function tick(){
+    timerRemaining--;
+    if(timerRemaining <= 0){
+      timerRemaining = 0;
+      renderTimer();
+      stopInterval();
+      timerBox.classList.add('done');
+      beep();
+      return;
+    }
+    renderTimer();
+  }
+
+  function startPauseTimer(){
+    primeAudio();
+    if(timerInterval){
+      stopInterval();
+      return;
+    }
+    if(timerRemaining <= 0) timerRemaining = timerDefault;
+    timerBox.classList.remove('done');
+    timerStartPause.textContent = 'Pause';
+    timerStartPause.classList.add('running');
+    timerInterval = setInterval(tick, 1000);
+  }
+
+  function adjustTimer(delta){
+    stopInterval();
+    timerBox.classList.remove('done');
+    timerRemaining = Math.max(5, Math.min(600, timerRemaining + delta));
+    timerDefault = timerRemaining;
+    renderTimer();
+  }
+
+  function resetTimer(seconds){
+    stopInterval();
+    timerBox.classList.remove('done');
+    timerDefault = seconds;
+    timerRemaining = seconds;
+    renderTimer();
+  }
+
+  function openExercise(key, detailText){
     const data = EX_DATA[key];
     if(!data) return;
     iconUse.setAttribute('href', '#icon-ex-' + key);
@@ -1108,10 +1230,21 @@ const EX_DATA = {
       mistakesWrap.style.display = 'none';
     }
     tipEl.textContent = data.tip;
+
+    const parsed = parseDefaultSeconds(detailText);
+    if(parsed){
+      timerLabel.textContent = detailText.includes('Seite') ? 'Timer · pro Seite halten' : 'Timer · halten';
+      resetTimer(parsed);
+    } else {
+      timerLabel.textContent = 'Pause-Timer zwischen Sätzen';
+      resetTimer(60);
+    }
+
     overlay.classList.add('show');
   }
   function closeExercise(){
     overlay.classList.remove('show');
+    stopInterval();
   }
 
   document.querySelectorAll('.exercise[data-ex]').forEach(el => {
@@ -1119,14 +1252,21 @@ const EX_DATA = {
     badge.className = 'ex-info';
     badge.textContent = 'i';
     el.appendChild(badge);
-    el.addEventListener('click', () => openExercise(el.dataset.ex));
+    const detailEl = el.querySelector('.ex-detail');
+    const detailText = detailEl ? detailEl.textContent : '';
+    el.addEventListener('click', () => openExercise(el.dataset.ex, detailText));
     el.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExercise(el.dataset.ex); }
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExercise(el.dataset.ex, detailText); }
     });
   });
   closeBtn.addEventListener('click', closeExercise);
   overlay.addEventListener('click', (e) => { if(e.target === overlay) closeExercise(); });
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeExercise(); });
+
+  timerStartPause.addEventListener('click', startPauseTimer);
+  timerMinus.addEventListener('click', () => adjustTimer(-15));
+  timerPlus.addEventListener('click', () => adjustTimer(15));
+  timerReset.addEventListener('click', () => resetTimer(timerDefault));
 })();
 
 // --- PWA: Service Worker registrieren ---
