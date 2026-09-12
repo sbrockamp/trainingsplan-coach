@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Trainingsplan — Coach</title>
+<meta name="description" content="Trainings- und Ernährungsplan fürs Bergtraining — installierbar auf Laptop und Handy.">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f3a5f">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Coach">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f6f2; --ink:#1c2b2e; --line:#c9d0ce;
+    --road:#1f3a5f; --road-dim:#5c7a9c;
+    --kom:#c0392b; --kom-dim:#e8c5c0;
+    --go:#2e7d5b; --go-dim:#cfe6dc;
+    --card:#ffffff; --muted:#6b7573;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Barlow',sans-serif;padding-bottom:60px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 18px;}
+
+  header{background:var(--road);color:var(--paper);padding:26px 0 20px;position:relative;overflow:hidden;}
+  header .wrap{position:relative;z-index:2;}
+  .eyebrow{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:12.5px;color:#a9c2dc;margin:0 0 4px;}
+  h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:34px;line-height:1;margin:0 0 6px;}
+  .sub{font-size:14.5px;color:#cfe0f0;margin:0;max-width:560px;line-height:1.4;}
+  .elev{position:absolute;bottom:-2px;left:0;width:100%;height:40px;z-index:1;opacity:.3;}
+
+  .season-tabs{display:flex;gap:8px;margin-top:16px;}
+  .season-tab{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.03em;
+    text-transform:uppercase;background:rgba(255,255,255,.12);color:#dce8f3;
+    border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 16px;cursor:pointer;
+  }
+  .season-tab.active{background:var(--paper);color:var(--road);border-color:var(--paper);}
+
+  .minweek{background:var(--kom);color:#fff;font-family:'Barlow Condensed',sans-serif;padding:10px 0;}
+  .minweek .wrap{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;}
+  .minweek b{font-size:15px;letter-spacing:.03em;text-transform:uppercase;}
+  .minweek span{font-size:15px;font-weight:500;}
+
+  .variant-bar{padding:18px 0 4px;}
+  .variant-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .variant-tab{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13.5px;
+    background:#fff;color:var(--road);border:1px solid var(--line);border-radius:8px;
+    padding:6px 13px;cursor:pointer;
+  }
+  .variant-tab.active{background:var(--road);color:#fff;border-color:var(--road);}
+  .variant-note{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
+
+  section{padding:22px 0 6px;}
+  h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  .days{display:flex;flex-direction:column;gap:10px;}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;}
+  .day.hill{border-left:5px solid var(--kom);}
+  .day.easy{border-left:5px solid var(--go);}
+  .day.rest{border-left:5px solid var(--line);}
+
+  .icon-box{width:44px;height:44px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+  .icon-box svg{width:28px;height:28px;}
+  .icon-box.rest{background:#ececeb;color:var(--muted);}
+  .icon-box.strength{background:#e7ecf1;color:var(--road);}
+  .icon-box.hill{background:var(--kom-dim);color:var(--kom);}
+  .icon-box.easy{background:var(--go-dim);color:var(--go);}
+  .icon-box.long{background:var(--kom-dim);color:var(--kom);}
+
+  .daylabel{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;width:66px;flex-shrink:0;padding-top:2px;color:var(--road);}
+  .daylabel small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;}
+  .daybody{flex:1;}
+  .tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:6px;}
+  .tag.hill{background:var(--kom-dim);color:var(--kom);}
+  .tag.easy{background:var(--go-dim);color:var(--go);}
+  .tag.rest{background:#ececeb;color:var(--muted);}
+  .daytitle{font-size:16px;font-weight:600;margin:0 0 3px;}
+  .daydesc{font-size:14px;color:var(--muted);margin:0;line-height:1.4;}
+  .checkrow{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .checkrow input{width:17px;height:17px;accent-color:var(--go);cursor:pointer;}
+  .checkrow label{font-size:12.5px;color:var(--muted);cursor:pointer;}
+
+  .exercise-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .exercise{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1 1 155px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .exercise:hover, .exercise:focus-visible{border-color:var(--road-dim);background:#eef2f5;outline:none;}
+  .exercise svg{width:26px;height:26px;flex-shrink:0;color:var(--road);}
+  .exercise .ex-name{font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);}
+  .exercise .ex-detail{font-size:11px;color:var(--muted);margin-top:1px;}
+  .exercise .ex-info{margin-left:auto;flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--road);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,43,46,.55);z-index:50;align-items:flex-end;justify-content:center;}
+  .modal-overlay.show{display:flex;}
+  @media (min-width:640px){ .modal-overlay{align-items:center;} }
+  .modal-card{background:var(--card);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:22px 22px 26px;position:relative;}
+  @media (min-width:640px){ .modal-card{border-radius:16px;} }
+  .modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:var(--paper);color:var(--muted);font-size:18px;cursor:pointer;line-height:1;}
+  .modal-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-right:30px;}
+  .modal-head .icon-box{width:44px;height:44px;flex-shrink:0;border-radius:9px;background:#e7ecf1;color:var(--road);display:flex;align-items:center;justify-content:center;}
+  .modal-head .icon-box svg{width:28px;height:28px;}
+  .modal-head h3{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700;margin:0;color:var(--ink);}
+  .modal-section{margin-top:14px;}
+  .modal-section h4{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--road);margin:0 0 6px;}
+  .modal-section p, .modal-section li{font-size:14px;color:var(--ink);line-height:1.55;}
+  .modal-section ol, .modal-section ul{margin:0;padding-left:20px;}
+  .modal-section ol li{margin-bottom:4px;}
+  .modal-tip{background:var(--go-dim);border-radius:8px;padding:10px 12px;font-size:13.5px;color:#1d4f3a;margin-top:14px;}
+  .modal-tip b{color:var(--go);}
+
+  details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:10px;}
+  details summary{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15.5px;cursor:pointer;outline:none;}
+  details p, details ul{font-size:14px;color:var(--ink);line-height:1.55;}
+  details ul{padding-left:18px;margin:8px 0;}
+
+  .nutriday{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+  .nutriday h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;margin:0 0 8px;display:flex;gap:8px;align-items:center;}
+  .nutriday .badge{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:var(--go-dim);color:var(--go);padding:2px 7px;border-radius:20px;}
+  .nutriday .badge.ride{background:var(--kom-dim);color:var(--kom);}
+  .meal{font-size:14px;margin:3px 0;color:var(--ink);}
+  .meal b{color:var(--road);font-weight:600;}
+
+  .shoplist{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:600px){.shoplist{grid-template-columns:1fr;}}
+  .store{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;}
+  .store h3{font-family:'Barlow Condensed',sans-serif;font-size:15px;margin:0 0 8px;color:var(--road);}
+  .store ul{list-style:none;padding:0;margin:0;}
+  .store li{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:4px 0;border-bottom:1px solid #f0f0ee;}
+  .store li:last-child{border-bottom:none;}
+  .store input{width:15px;height:15px;accent-color:var(--go);flex-shrink:0;}
+
+  .recipe{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+  .recipe h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;margin:0 0 4px;}
+  .recipe .when{font-size:11.5px;color:var(--kom);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .recipe p{font-size:14px;color:var(--ink);margin:6px 0 0;line-height:1.5;}
+  .recipe .recipe-cols{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-top:10px;}
+  @media (max-width:600px){.recipe .recipe-cols{grid-template-columns:1fr;}}
+  .recipe h4{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--road);margin:0 0 6px;}
+  .recipe ul, .recipe ol{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink);line-height:1.55;}
+  .recipe ol li{margin-bottom:3px;}
+
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:30px 0 10px;}
+
+  .install-banner{display:none;background:var(--go);color:#fff;font-family:'Barlow',sans-serif;}
+  .install-banner.show{display:block;}
+  .install-banner .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px;flex-wrap:wrap;}
+  .install-banner p{margin:0;font-size:13.5px;line-height:1.4;}
+  .install-banner b{font-weight:600;}
+  .install-banner-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+  .install-btn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;background:#fff;color:var(--go);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;}
+  .install-dismiss{background:transparent;border:none;color:#fff;opacity:.8;font-size:20px;line-height:1;cursor:pointer;padding:2px 6px;}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <defs>
+    <symbol id="icon-rest" viewBox="0 0 48 48"><path d="M31 9c-8 2-14 9-14 18 0 10 8 18 18 18 4.5 0 8.6-1.6 11.8-4.3-1.6.5-3.3.8-5 .8-9.9 0-18-8.1-18-18 0-5.8 2.7-11 7-14.3-.2-.1-.5-.2-.8-.3z" fill="currentColor"/></symbol>
+    <symbol id="icon-strength" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="4" y="17" width="7" height="14" rx="2"/><rect x="37" y="17" width="7" height="14" rx="2"/><line x1="11" y1="24" x2="37" y2="24"/></g></symbol>
+    <symbol id="icon-bike" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="34" r="8"/><circle cx="36" cy="34" r="8"/><path d="M12 34 L22 18 L36 34 M22 18 L29 18 M22 18 L18 34"/><path d="M29 18 L33 12 M26 12 L33 12"/></g></symbol>
+    <symbol id="icon-run" viewBox="0 0 48 48"><circle cx="26" cy="8" r="3.2" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M25 11 L20 22"/><path d="M20 22 L28 26 L24 40"/><path d="M20 22 L11 20"/><path d="M28 26 L36 22"/><path d="M20 22 L14 34 L18 40"/></g></symbol>
+    <symbol id="icon-ex-splitsquat" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 24 L10 33 L12 43"/><path d="M15 24 L25 32 L34 27"/><path d="M30 27 L44 27"/><path d="M32 27 L32 43"/><path d="M42 27 L42 43"/><path d="M2 43 L20 43"/><path d="M14 15 L8 25"/><path d="M13 11.5 L15 24"/></g><circle cx="13" cy="8" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-stepup" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 22 L24 17 L26 12"/><path d="M17 22 L12 32 L9 42"/><path d="M22 12 L38 12 L38 42 L22 42 Z"/><path d="M0 42 L22 42"/><path d="M16 13 L23 8"/><path d="M15 10.5 L17 22"/></g><circle cx="15" cy="7" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-legpress" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 34 L16 14"/><path d="M4 34 L22 34"/><path d="M18 28 L28 26 L40 22"/><path d="M18 28 L22 34 L14 36"/><path d="M40 10 L40 30"/><path d="M14 17 L8 24"/><path d="M13 14 L18 28"/></g><circle cx="10" cy="11" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-hip" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 24 L11 29 L9 40"/><path d="M18 24 L27 30 L29 40"/><path d="M4 40 L14 40"/><path d="M24 40 L34 40"/><path d="M18 16 L11 21"/><path d="M18 11.5 L18 24"/></g><circle cx="18" cy="8" r="3.5" fill="currentColor"/><circle cx="27" cy="40" r="2.1" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-calf" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M40 4 L40 44"/><path d="M18 15 L38 10"/><path d="M18 15 L38 18"/><path d="M20 24 L26 32 L30 42"/><path d="M20 24 L10 34 L4 42"/><path d="M14 13.5 L20 24"/></g><circle cx="14" cy="10" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-spine" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 23 L32 25"/><path d="M32 25 L32 38 L39 41"/><path d="M13 22 L13 40"/><path d="M13 22 Q6 11 15 4"/></g><circle cx="9" cy="23" r="3.3" fill="currentColor"/><circle cx="15" cy="4" r="2.1" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<header>
+  <svg class="elev" viewBox="0 0 900 40" preserveAspectRatio="none"><polyline points="0,36 80,34 140,18 200,9 260,23 320,27 400,7 460,4 520,20 600,27 660,13 720,6 800,22 900,16" fill="none" stroke="#f7f6f2" stroke-width="3"/></svg>
+  <div class="wrap">
+    <p class="eyebrow">Trainingsplan · Grundgerüst</p>
+    <h1>Deine Trainingswoche</h1>
+    <p class="sub">Kein Kalenderdatum, sondern ein wiederverwendbares Grundgerüst — mit rotierenden Wochen-Varianten, damit nicht jede Woche identisch abläuft.</p>
+    <div class="season-tabs">
+      <button class="season-tab" data-season="in" onclick="setSeason('in')">Mai – September</button>
+      <button class="season-tab" data-season="off" onclick="setSeason('off')">Oktober – April</button>
+    </div>
+  </div>
+</header>
+
+<div class="install-banner" id="install-banner">
+  <div class="wrap">
+    <p id="install-text"><b>App installieren:</b> läuft dann offline, eigenes Icon auf dem Home-Bildschirm.</p>
+    <div class="install-banner-actions">
+      <button class="install-btn" id="install-btn" style="display:none;">Installieren</button>
+      <button class="install-dismiss" id="install-dismiss" aria-label="Schließen">×</button>
+    </div>
+  </div>
+</div>
+
+<div class="minweek">
+  <div class="wrap">
+    <b>Wenn's eng wird:</b>
+    <span>Mittwoch und Donnerstag mit der Radsportgruppe haben Priorität — die stehen ohnehin fest. Rutscht der Rest der Woche komplett aus, zählt der lange Wochenendausritt allein schon als echte Trainingswoche.</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ================= SAISON: MAI–SEPTEMBER ================= -->
+<div class="season-panel" data-season="in">
+
+  <div class="variant-bar">
+    <div class="variant-tabs">
+      <button class="variant-tab" data-variant="w1" onclick="setVariant('in','w1')">Woche 1 · Sweet-Spot</button>
+      <button class="variant-tab" data-variant="w2" onclick="setVariant('in','w2')">Woche 2 · Kadenz</button>
+      <button class="variant-tab" data-variant="w3" onclick="setVariant('in','w3')">Woche 3 · Höchstbelastung</button>
+      <button class="variant-tab" data-variant="erholung" onclick="setVariant('in','erholung')">Erholungswoche</button>
+    </div>
+    <p class="variant-note">Rotationsprinzip: 3 Aufbau-Wochen, dann eine Erholungswoche — danach wieder von vorn. <span id="auto-note-in"></span></p>
+  </div>
+
+  <section>
+    <h2>Diese Woche</h2>
+
+    <!-- Woche 1 -->
+    <div class="variant-block" data-variant="w1">
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft</span>
+            <p class="daytitle">Einbeinig, Basispensum</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div>
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 8–10/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Mi<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag hill">Bergeinheit · 70 km</span>
+            <p class="daytitle">Sweet-Spot Bergintervalle</p>
+            <p class="daydesc">4 x 8 Min bei RPE 7–8 an einem Anstieg der Gruppenroute, volle Erholung bergab dazwischen. Fährt die Gruppe das nicht mit, den steilsten Abschnitt der Ausfahrt dafür nutzen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Do<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag easy">Locker · 70 km</span>
+            <p class="daytitle">Erholung von Mittwoch</p>
+            <p class="daydesc">Mit der Gruppe mitfahren, an Anstiegen bewusst hochtourig (85–95 U/min) statt mahlen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft (2. Einheit) + Mobility</span>
+            <p class="daytitle">Kurze zweite Kraft-Einheit, dann Wochenende vorbereiten</p>
+            <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag hill">Langer Ausritt · 100 km+</span>
+            <p class="daytitle">1–2 Tempo-Anstiege</p>
+            <p class="daydesc">Mitte der Fahrt 1–2 Anstiege bei RPE 6–7 fahren statt Sozialtempo. Fueling siehe unten. Anderen Wochenendtag frei nehmen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Woche 2 -->
+    <div class="variant-block" data-variant="w2">
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft</span>
+            <p class="daytitle">Einbeinig, leicht progressiv</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 12/Bein, etwas mehr Gewicht</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Mi<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag hill">Bergeinheit · 70 km</span>
+            <p class="daytitle">Kadenz-fokussiert</p>
+            <p class="daydesc">An jedem Anstieg bewusst hochtourig (85–95 U/min) fahren, auch wenn die Gruppe langsamer tritt — retrainiert das Bewegungsmuster, das reines Flachfahren nicht aufbaut.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Do<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag hill">Over-Unders · 70 km</span>
+            <p class="daytitle">Wechsel an einem Anstieg</p>
+            <p class="daydesc">2 Min bei RPE 6 / 1 Min bei RPE 8–9 im Wechsel für die Länge eines Anstiegs — trainiert Antritte und Erholung während des Kletterns.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft (2. Einheit) + Mobility</span>
+            <p class="daytitle">Kurze zweite Kraft-Einheit, dann Wochenende vorbereiten</p>
+            <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag hill">Langer Ausritt · 100 km+</span>
+            <p class="daytitle">2–3 Tempo-Anstiege</p>
+            <p class="daydesc">Etwas mehr Struktur als letzte Woche — 2–3 Anstiege bei RPE 6–7. Anderen Wochenendtag frei nehmen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Woche 3 -->
+    <div class="variant-block" data-variant="w3">
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft</span>
+            <p class="daytitle">Letzter Reiz vor der Erholung</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 12/Bein</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Mi<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag hill">Bergeinheit · 70 km</span>
+            <p class="daytitle">Sweet-Spot + Kadenz kombiniert</p>
+            <p class="daydesc">Härteste Einheit der Rotation: Anstiege im Sweet-Spot fahren, dabei hochtourig bleiben statt zu mahlen. Beim härtesten Tempo der Gruppe mitgehen, wenn möglich.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Do<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag easy">Tempowechsel · 70 km</span>
+            <p class="daytitle">Erholungsfähigkeit trainieren</p>
+            <p class="daydesc">Tempowechsel der Gruppe mitgehen, ohne komplett zuzumachen — Fokus auf schnell wieder runterkommen nach einem harten Stück.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft (2. Einheit) + Mobility</span>
+            <p class="daytitle">Kurze zweite Kraft-Einheit, dann Wochenende vorbereiten</p>
+            <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day hill">
+          <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag hill">Langer Ausritt · 100 km+</span>
+            <p class="daytitle">Anspruchsvollste Strecke der Rotation</p>
+            <p class="daydesc">Wenn möglich die schwerste Route der letzten Wochen — das ist der Höhepunkt des Blocks vor der Erholungswoche. Danach bewusst locker ausrollen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Erholung -->
+    <div class="variant-block" data-variant="erholung">
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe</span>
+            <p class="daytitle">Ganz frei</p>
+            <p class="daydesc">Diese Woche zählt Erholung mehr als jede Einheit.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag rest">Kraft aussetzen</span>
+            <p class="daytitle">Nur Mobility, kein Krafttraining</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Mi<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag easy">Locker · 70 km</span>
+            <p class="daytitle">Bewusst locker mitfahren</p>
+            <p class="daydesc">Keine Intervalle, auch an Anstiegen nicht — diese Woche ist Erholung, kein zweiter Aufbau-Reiz.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Do<small>Radsportgruppe</small></div>
+          <div class="daybody">
+            <span class="tag easy">Locker · 70 km</span>
+            <p class="daytitle">Wie Mittwoch — locker</p>
+            <p class="daydesc">Gruppentempo mitfahren, ohne selbst Druck reinzubringen.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe</span>
+            <p class="daytitle">Ganz frei</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag easy">Kurz oder ohne Struktur</span>
+            <p class="daytitle">Regeneration vor Kilometern</p>
+            <p class="daydesc">Deutlich kürzer als sonst oder ganz ohne Struktur — Grundlage für den nächsten Block. Wenn der Körper nach mehr verlangt, ruhig fahren, aber ohne Tempo-Abschnitte.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- ================= SAISON: OKTOBER–APRIL ================= -->
+<div class="season-panel" data-season="off">
+
+  <div class="variant-bar">
+    <div class="variant-tabs">
+      <button class="variant-tab" data-variant="kraft" onclick="setVariant('off','kraft')">Kraft-Fokus</button>
+      <button class="variant-tab" data-variant="lauf" onclick="setVariant('off','lauf')">Lauf-Fokus</button>
+      <button class="variant-tab" data-variant="erholung" onclick="setVariant('off','erholung')">Erholungswoche</button>
+    </div>
+    <p class="variant-note">Rotationsprinzip: ohne festen Radsportgruppen-Termin wechseln sich Kraft-Fokus, Lauf-Fokus und eine leichtere Woche ab. <span id="auto-note-off"></span> — das ist ein erster Rahmen, den wir gern verfeinern, sobald klar ist, was im Winter sonst noch möglich ist (z. B. Rolle/Indoor).</p>
+  </div>
+
+  <section>
+    <h2>Diese Woche</h2>
+
+    <div class="variant-block" data-variant="kraft">
+      <div class="days">
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft #1</span><p class="daytitle">Grundlagenaufbau</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">4× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Locker</span><p class="daytitle">Rad drinnen/draußen oder Ruhe</p><p class="daydesc">Wetterabhängig — kein Muss, eher ein Angebot für aktive Erholung.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag easy">Kraft #2</span><p class="daytitle">Gleiche Übungen, zweite Einheit</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="exercise-list"><div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day easy"><div class="icon-box easy"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag easy">Lauf · ~10 km</span><p class="daytitle">Locker, wenn Zeit/Wetter passt</p><p class="daydesc">Optional — kein Muss in dieser Variante, aber eine gute Gelegenheit, die Grundlagenausdauer zu halten.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+      </div>
+    </div>
+
+    <div class="variant-block" data-variant="lauf">
+      <div class="days">
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft</span><p class="daytitle">Reduziertes Pensum</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10–12/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day hill"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Lockeres Tempo</p><p class="daydesc">Grundlagenlauf — Gespräch sollte noch möglich sein.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Erholung vom Lauf</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag easy">Kraft (2. Einheit)</span><p class="daytitle">Reduziertes Pensum — oder Ruhe, je nach Wochenform</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day hill"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Oder Rad locker, wenn Wetter passt</p><p class="daydesc">Zweiter Lauf der Woche für die Grundlagenausdauer — flexibel gegen eine lockere Radfahrt tauschbar.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+      </div>
+    </div>
+
+    <div class="variant-block" data-variant="erholung">
+      <div class="days">
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag rest">Kraft leicht oder aus</span><p class="daytitle">Nur wenn es sich gut anfühlt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz lockere Bewegung, wenn überhaupt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag rest">Ganz nach Lust</span><p class="daytitle">Optional ein lockerer Lauf oder Spaziergang</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<section>
+  <h2>Berge &amp; Erholung</h2>
+  <details>
+    <summary>Warum Berge speziell (und nicht einfach „fitter werden")</summary>
+    <p>Ein Schnitt von 30 km/h im Training mit 41 km/h Bestzeit im Rennen zeigt: der Motor ist stark — die Bergschwäche liegt fast immer an zu niedriger Trittfrequenz beim Mahlen, zu wenig bergspezifischen Intervallen, oder zu früh ins Rote fahren und vor der Kuppe einbrechen.</p>
+  </details>
+  <details>
+    <summary>Nach-der-Fahrt-Routine (immer, nicht nur bei Muskelkater)</summary>
+    <ul>
+      <li>10 Min lockeres Ausrollen statt abrupt stehen bleiben</li>
+      <li>Waden- und Oberschenkeldehnung</li>
+      <li>Elektrolyte + Eiweiß innerhalb einer Stunde</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Zu den Wadenkrämpfen</summary>
+    <p>Wiederkehrende Wadenkrämpfe bei diesem Trainingsumfang liegen oft eher an Sattel-/Cleat-Position als an der Ernährung — lohnt sich, den Bike-Fit checken zu lassen, wenn das anhält. Auf der Fahrt: ein Elektrolytgetränk ab etwa 90 Minuten, keine plötzlichen harten Antritte an Anstiegen. Wenn die Krämpfe schlimmer werden, lohnt sich ein Check beim Physio.</p>
+  </details>
+</section>
+
+<section>
+  <h2>Ernährung</h2>
+  <div class="nutriday">
+    <h3>Bürotage <span class="badge">ohne Rad</span></h3>
+    <p class="meal"><b>Morgens:</b> Kaffee + kleiner Snack vor dem Mittag — Skyr oder Quark mit Nüssen, oder ein vorgekochtes Ei.</p>
+    <p class="meal"><b>Mittag:</b> wie gewohnt — Haferflocken + Quark + Obst + Honig.</p>
+    <p class="meal"><b>Abend:</b> vorgekochtes Hähnchen oder Lachs + Reis/Vollkornnudeln + Gemüse.</p>
+  </div>
+  <div class="nutriday">
+    <h3>Fahr-/Lauftage <span class="badge ride">Training</span></h3>
+    <p class="meal"><b>Vorher:</b> Banane oder Datteln 30–60 Min vorher, wenn direkt nach der Arbeit trainiert wird.</p>
+    <p class="meal"><b>Danach:</b> Erholungs-Schüssel (Quark + Haferflocken + Banane + Honig + Nüsse) innerhalb einer Stunde.</p>
+  </div>
+  <div class="nutriday">
+    <h3>Langer Ausritt <span class="badge ride">100 km+</span></h3>
+    <p class="meal"><b>Vorher:</b> richtiges kohlenhydrathaltiges Frühstück, nicht nur Kaffee.</p>
+    <p class="meal"><b>Während:</b> Datteln/Banane + Elektrolytflasche ab ~90 Min.</p>
+    <p class="meal"><b>Danach:</b> sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Einkaufsliste — Aldi &amp; Lidl</h2>
+  <div class="shoplist">
+    <div class="store"><h3>Milchprodukte &amp; Eiweiß</h3><ul>
+      <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
+      <li><input type="checkbox"/> Skyr, 2–3 Becher</li>
+      <li><input type="checkbox"/> Eier, 10er</li>
+      <li><input type="checkbox"/> Hähnchenbrust</li>
+      <li><input type="checkbox"/> TK-Lachsfilet</li>
+      <li><input type="checkbox"/> Thunfisch in Dosen</li>
+    </ul></div>
+    <div class="store"><h3>Getreide &amp; Vorrat</h3><ul>
+      <li><input type="checkbox"/> Haferflocken (kernig)</li>
+      <li><input type="checkbox"/> Reis oder Vollkornnudeln</li>
+      <li><input type="checkbox"/> Linsen/Kichererbsen</li>
+      <li><input type="checkbox"/> Honig</li>
+      <li><input type="checkbox"/> Datteln</li>
+    </ul></div>
+    <div class="store"><h3>Obst, Gemüse &amp; TK</h3><ul>
+      <li><input type="checkbox"/> Bananen</li>
+      <li><input type="checkbox"/> TK-Beerenmischung</li>
+      <li><input type="checkbox"/> Spinat</li>
+      <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
+      <li><input type="checkbox"/> Saisonales Gemüse</li>
+    </ul></div>
+    <div class="store"><h3>Extras</h3><ul>
+      <li><input type="checkbox"/> Mandeln/Walnüsse</li>
+      <li><input type="checkbox"/> Chiasamen oder Leinsamen</li>
+      <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>Rezepte</h2>
+  <div class="recipe">
+    <span class="when">Morgens · 5 Min · ohne Kochen</span>
+    <h3>Quark-Schüssel vor dem Mittag</h3>
+    <p>Kleiner, schneller Eiweiß-Snack gegen die Lücke zwischen Kaffee und Mittagessen — kein neues Koch-Ritual, nur 5 Minuten.</p>
+    <div class="recipe-cols">
+      <div>
+        <h4>Zutaten (1 Portion)</h4>
+        <ul>
+          <li>150–200 g Magerquark</li>
+          <li>1 Handvoll Mandeln/Walnüsse</li>
+          <li>1 Handvoll TK-Beerenmischung</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Zubereitung</h4>
+        <ol>
+          <li>Magerquark in eine Schüssel geben.</li>
+          <li>TK-Beeren direkt daraufgeben — leicht gefroren schmecken sie wie ein Sorbet und tauen beim Essen von selbst an.</li>
+          <li>Nüsse darüberstreuen, fertig.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="recipe">
+    <span class="when">Nach dem Training · innerhalb 1 Std.</span>
+    <h3>Erholungs-Schüssel</h3>
+    <p>Eiweiß + Kohlenhydrate direkt nach der Ausfahrt — der Zeitpunkt zählt hier mehr als die Feinheiten des Rezepts.</p>
+    <div class="recipe-cols">
+      <div>
+        <h4>Zutaten (1 Portion)</h4>
+        <ul>
+          <li>150 g Magerquark</li>
+          <li>40–50 g Haferflocken</li>
+          <li>1 Banane</li>
+          <li>1 EL Honig</li>
+          <li>1 Handvoll Nüsse</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Zubereitung</h4>
+        <ol>
+          <li>Haferflocken unter den Magerquark rühren.</li>
+          <li>Banane in Scheiben schneiden und daraufgeben.</li>
+          <li>Mit Honig beträufeln, Nüsse darüberstreuen.</li>
+          <li>Direkt nach dem Duschen/Abstellen des Rads essen, nicht erst zur nächsten Mahlzeit aufheben.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="recipe">
+    <span class="when">Vorkochen · reicht für 3–4 Portionen</span>
+    <h3>Aufwärm-Abendessen</h3>
+    <p>An einem ruhigeren Tag in größerer Menge kochen, dann an Fahr-Abenden nur noch aufwärmen — kein Kochen nach einer 70-km-Ausfahrt.</p>
+    <div class="recipe-cols">
+      <div>
+        <h4>Zutaten (3–4 Portionen)</h4>
+        <ul>
+          <li>400–500 g Hähnchenbrust <i>oder</i> TK-Lachsfilet</li>
+          <li>250 g Reis oder Vollkornnudeln</li>
+          <li>1 Portion Gemüse (Brokkoli, Paprika, Zucchini o. ä., saisonal)</li>
+          <li>Salz, Pfeffer, Paprikapulver</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Zubereitung</h4>
+        <ol>
+          <li>Reis oder Nudeln nach Packungsanweisung kochen.</li>
+          <li>Hähnchen würzen, in der Pfanne oder bei 200 °C ca. 20 Min im Ofen durchgaren. Lachs: TK-Filet nicht auftauen, direkt bei 180 °C ca. 15–18 Min im Ofen garen.</li>
+          <li>Gemüse parallel dünsten oder im letzten Drittel mit ins Ofenblech geben.</li>
+          <li>In einzelnen Portionsboxen im Kühlschrank lagern (3–4 Tage haltbar).</li>
+          <li>Abends nur aufwärmen: 2–3 Min Mikrowelle oder kurz in der Pfanne.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>Fortschritt wird automatisch je Kalenderwoche auf diesem Gerät gespeichert.</footer>
+
+<div class="modal-overlay" id="ex-modal" role="dialog" aria-modal="true" aria-labelledby="ex-modal-title">
+  <div class="modal-card">
+    <button class="modal-close" id="ex-modal-close" aria-label="Schließen">×</button>
+    <div class="modal-head">
+      <div class="icon-box"><svg id="ex-modal-icon" style="width:28px;height:28px;"><use id="ex-modal-icon-use" href="#icon-ex-hip"/></svg></div>
+      <h3 id="ex-modal-title">Übung</h3>
+    </div>
+    <div class="modal-section">
+      <h4>Warum</h4>
+      <p id="ex-modal-why"></p>
+    </div>
+    <div class="modal-section">
+      <h4>Ausführung</h4>
+      <ol id="ex-modal-steps"></ol>
+    </div>
+    <div class="modal-section" id="ex-modal-mistakes-wrap">
+      <h4>Häufige Fehler</h4>
+      <ul id="ex-modal-mistakes"></ul>
+    </div>
+    <div class="modal-tip"><b>Tipp:</b> <span id="ex-modal-tip"></span></div>
+  </div>
+</div>
+
+<script>
+function getISOWeek(date){
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = (d.getUTCDay() + 6) % 7;
+  d.setUTCDate(d.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(d.getUTCFullYear(),0,4));
+  const diff = d - firstThursday;
+  const week = 1 + Math.round(diff / (7*24*3600*1000));
+  return {year: d.getUTCFullYear(), week: week};
+}
+
+function setSeason(season){
+  document.querySelectorAll('.season-panel').forEach(p=> p.style.display = (p.dataset.season===season ? 'block':'none'));
+  document.querySelectorAll('.season-tab').forEach(b=> b.classList.toggle('active', b.dataset.season===season));
+}
+function setVariant(season, variant){
+  const panel = document.querySelector('.season-panel[data-season="'+season+'"]');
+  panel.querySelectorAll('.variant-block').forEach(v=> v.style.display = (v.dataset.variant===variant ? 'block':'none'));
+  panel.querySelectorAll('.variant-tab').forEach(b=> b.classList.toggle('active', b.dataset.variant===variant));
+}
+
+(function init(){
+  const now = new Date();
+  const month = now.getMonth()+1;
+  const inSeason = (month>=5 && month<=9);
+  const iso = getISOWeek(now);
+
+  const inVariants = ['w1','w2','w3','erholung'];
+  const inLabels = {w1:'Woche 1',w2:'Woche 2',w3:'Woche 3',erholung:'Erholungswoche'};
+  const variantIn = inVariants[(iso.week-1) % 4];
+
+  const offVariants = ['kraft','lauf','erholung'];
+  const offLabels = {kraft:'Kraft-Fokus',lauf:'Lauf-Fokus',erholung:'Erholungswoche'};
+  const variantOff = offVariants[(iso.week-1) % 3];
+
+  setVariant('in', variantIn);
+  setVariant('off', variantOff);
+  setSeason(inSeason ? 'in' : 'off');
+
+  document.getElementById('auto-note-in').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + inLabels[variantIn] + '.';
+  document.getElementById('auto-note-off').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + offLabels[variantOff] + '.';
+
+  // Fortschritt je echter Kalenderwoche speichern, unabhängig von der gewählten Variante.
+  // localStorage ist pro Gerät/Browser — kein automatischer Sync zwischen Handy und Laptop
+  // (siehe README für den Stand dazu).
+  const weekKey = iso.year + '-W' + iso.week;
+  const boxes = document.querySelectorAll('.trackbox');
+  function loadState(){
+    for(const box of boxes){
+      try{
+        const val = localStorage.getItem('ck:'+weekKey+':'+box.dataset.day);
+        if(val === 'true'){ box.checked = true; }
+      }catch(e){}
+    }
+  }
+  boxes.forEach(box=>{
+    box.addEventListener('change', ()=>{
+      try{
+        localStorage.setItem('ck:'+weekKey+':'+box.dataset.day, String(box.checked));
+        document.querySelectorAll('.trackbox[data-day="'+box.dataset.day+'"]').forEach(b=>{ if(b!==box) b.checked = box.checked; });
+      }catch(e){ console.error('storage error', e); }
+    });
+  });
+  loadState();
+})();
+
+// --- Übungs-Details (Klick auf eine Übung öffnet das Modal) ---
+const EX_DATA = {
+  splitsquat: {
+    name: 'Bulgarian Split Squat',
+    why: 'Einbeinige Kraft direkt fürs Bergfahren — Klettern ist zu großem Teil eine einbeinige, niedrigtourige Kraftausdauer-Belastung, genau das Muster, das reines Flachfahren nicht trainiert.',
+    steps: [
+      'Hinteren Fuß erhöht ablegen (Bank, Stufe oder Stuhlkante).',
+      'Schrittweite so wählen, dass das vordere Knie beim Absenken über der Ferse bleibt, nicht darüber hinausschiebt.',
+      'Oberkörper leicht vorgeneigt, gerade nach unten absenken, bis das hintere Knie fast den Boden berührt.',
+      'Über die vordere Ferse hochdrücken, nicht über den Vorfuß.'
+    ],
+    mistakes: ['Vorderes Knie fällt nach innen ein.', 'Zu kurze Schrittweite drückt das Knie über die Zehenspitzen.', 'Gewicht rutscht aufs hintere Bein statt komplett aufs vordere.'],
+    tip: 'Am Anfang ohne Zusatzgewicht üben — Balance und saubere Linie gehen vor Tempo oder Last.'
+  },
+  stepup: {
+    name: 'Step-up',
+    why: 'Baut die konzentrische Kraft fürs Antreten am Berg auf — genau die Bewegung, die beim Wiederbeschleunigen aus niedriger Kadenz gebraucht wird.',
+    steps: [
+      'Auf eine stabile Erhöhung steigen (Stufe oder Bank auf etwa Kniehöhe).',
+      'Kompletten Fuß aufsetzen, nicht nur den Vorfuß.',
+      'Über die Ferse des oben stehenden Beins hochdrücken — nicht mit dem unteren Bein abstoßen.',
+      'Oben kurz stabil stehen, dann kontrolliert zurück nach unten.'
+    ],
+    mistakes: ['Abstoßen mit dem unteren Bein statt Arbeit über das obere Bein.', 'Erhöhung zu hoch gewählt, dadurch entsteht Schwung statt Kontrolle.'],
+    tip: 'Die Erhöhung so wählen, dass der Oberschenkel beim Aufsteigen etwa parallel zum Boden steht.'
+  },
+  legpress: {
+    name: 'Einbeinige Beinpresse',
+    why: 'Ergänzt die freien Übungen mit sauber dosierbarer Belastung — gut geeignet, um die Kraft progressiv zu steigern, ohne dass die Balance das Limit ist.',
+    steps: [
+      'Fuß mittig auf der Platte platzieren, Knie zeigt in Fußrichtung.',
+      'Kontrolliert absenken bis etwa 90° Kniewinkel.',
+      'Ferse bleibt die ganze Bewegung über auf der Platte.',
+      'Aktiv über die ganze Fußsohle nach oben drücken.'
+    ],
+    mistakes: ['Knie kollabiert nach innen.', 'Bewegungsumfang zu klein für einen echten Trainingsreiz.'],
+    tip: 'Langsamer runter als hoch (z. B. 3 Sekunden runter, 1 Sekunde hoch) verstärkt den Kraftausdauer-Reiz.'
+  },
+  hip: {
+    name: 'Hüftbeuger-Dehnung',
+    why: 'Viel Sitzen im Bürojob plus die gebeugte Rennradposition verkürzen die Hüftbeuger — das begrenzt die Hüftstreckung beim Antreten und begünstigt Rückenprobleme.',
+    steps: [
+      'Ausfallschritt-Position einnehmen, hinteres Knie am Boden.',
+      'Becken aktiv nach vorne/unten kippen — nicht nur den Oberkörper nach vorne neigen.',
+      'Position halten, bis vorne an der Hüfte des hinteren Beins ein Zug spürbar ist.',
+      'Rumpf dabei aufrecht halten, nicht einsinken.'
+    ],
+    mistakes: ['Nur der Oberkörper neigt sich, das Becken bleibt neutral — dann wirkt die Dehnung kaum.'],
+    tip: 'Das Gesäß des hinteren Beins leicht anspannen verstärkt die Dehnung spürbar.'
+  },
+  calf: {
+    name: 'Waden-Dehnung',
+    why: 'Direkt an die Wadenkrampf-Neigung gekoppelt — enge, verkürzte Waden erhöhen das Krampfrisiko bei langen, hoch belasteten Ausfahrten.',
+    steps: [
+      'Hände an eine Wand stützen, ein Bein einen großen Schritt zurück.',
+      'Ferse des hinteren Beins bleibt am Boden.',
+      'Variante 1: hinteres Knie durchgestreckt (Zwillingswadenmuskel).',
+      'Variante 2: hinteres Knie leicht gebeugt (tieferer Schollenmuskel).',
+      'Becken jeweils nach vorne schieben, bis Zug in der Wade spürbar ist.'
+    ],
+    mistakes: ['Nur eine der beiden Kniestellungen gedehnt — dann bleibt ein Teil der Wadenmuskulatur unberücksichtigt.'],
+    tip: 'Beide Varianten (Knie gestreckt und leicht gebeugt) je einmal machen — deckt beide Wadenmuskeln ab.'
+  },
+  spine: {
+    name: 'BWS-Rotation',
+    why: 'Die Rennradhaltung ist dauerhaft gebeugt und rotationsarm — eine bewegliche Brustwirbelsäule hilft beim Aufrichten im Wiegetritt und entlastet den unteren Rücken.',
+    steps: [
+      'In den Vierfüßlerstand gehen.',
+      'Eine Hand hinter den Kopf legen.',
+      'Ellbogen Richtung Decke rotieren, den Blick mitnehmen.',
+      'Bewegung kommt aus dem Brustkorb, nicht aus der Hüfte — Becken bleibt ruhig.'
+    ],
+    mistakes: ['Rotation kommt aus der Hüfte statt aus der Brustwirbelsäule.', 'Zu schnell/mit Schwung statt kontrolliert.'],
+    tip: 'Langsam und kontrolliert ausführen, kein Schwung — Qualität vor Wiederholungszahl.'
+  }
+};
+
+(function exerciseModal(){
+  const overlay = document.getElementById('ex-modal');
+  const closeBtn = document.getElementById('ex-modal-close');
+  const iconUse = document.getElementById('ex-modal-icon-use');
+  const titleEl = document.getElementById('ex-modal-title');
+  const whyEl = document.getElementById('ex-modal-why');
+  const stepsEl = document.getElementById('ex-modal-steps');
+  const mistakesWrap = document.getElementById('ex-modal-mistakes-wrap');
+  const mistakesEl = document.getElementById('ex-modal-mistakes');
+  const tipEl = document.getElementById('ex-modal-tip');
+
+  function openExercise(key){
+    const data = EX_DATA[key];
+    if(!data) return;
+    iconUse.setAttribute('href', '#icon-ex-' + key);
+    titleEl.textContent = data.name;
+    whyEl.textContent = data.why;
+    stepsEl.innerHTML = data.steps.map(s => '<li>' + s + '</li>').join('');
+    if(data.mistakes && data.mistakes.length){
+      mistakesEl.innerHTML = data.mistakes.map(s => '<li>' + s + '</li>').join('');
+      mistakesWrap.style.display = '';
+    } else {
+      mistakesWrap.style.display = 'none';
+    }
+    tipEl.textContent = data.tip;
+    overlay.classList.add('show');
+  }
+  function closeExercise(){
+    overlay.classList.remove('show');
+  }
+
+  document.querySelectorAll('.exercise[data-ex]').forEach(el => {
+    const badge = document.createElement('span');
+    badge.className = 'ex-info';
+    badge.textContent = 'i';
+    el.appendChild(badge);
+    el.addEventListener('click', () => openExercise(el.dataset.ex));
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExercise(el.dataset.ex); }
+    });
+  });
+  closeBtn.addEventListener('click', closeExercise);
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) closeExercise(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeExercise(); });
+})();
+
+// --- PWA: Service Worker registrieren ---
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(e=> console.error('SW-Registrierung fehlgeschlagen', e));
+  });
+}
+
+// --- PWA: Installations-Hinweis ---
+(function installBanner(){
+  const banner = document.getElementById('install-banner');
+  const btn = document.getElementById('install-btn');
+  const dismiss = document.getElementById('install-dismiss');
+  const text = document.getElementById('install-text');
+  const DISMISS_KEY = 'install-banner-dismissed';
+
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if(isStandalone || localStorage.getItem(DISMISS_KEY) === 'true'){ return; }
+
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  let deferredPrompt = null;
+
+  if(isIOS){
+    text.innerHTML = '<b>App installieren:</b> Teilen-Symbol tippen, dann „Zum Home-Bildschirm" — läuft danach offline mit eigenem Icon.';
+    banner.classList.add('show');
+  } else {
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.style.display = 'inline-block';
+      banner.classList.add('show');
+    });
+  }
+
+  btn.addEventListener('click', async ()=>{
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    banner.classList.remove('show');
+  });
+  dismiss.addEventListener('click', ()=>{
+    localStorage.setItem(DISMISS_KEY, 'true');
+    banner.classList.remove('show');
+  });
+})();
+</script>
+
+</body>
+</html>
