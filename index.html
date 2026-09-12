@@ -217,6 +217,7 @@
       <button class="variant-tab" data-variant="w2" onclick="setVariant('in','w2')">Woche 2 · Kadenz</button>
       <button class="variant-tab" data-variant="w3" onclick="setVariant('in','w3')">Woche 3 · Höchstbelastung</button>
       <button class="variant-tab" data-variant="erholung" onclick="setVariant('in','erholung')">Erholungswoche</button>
+      <button class="variant-tab" data-variant="reise" onclick="setVariant('in','reise')">Reisewoche</button>
     </div>
     <p class="variant-note">Rotationsprinzip: 3 Aufbau-Wochen, dann eine Erholungswoche — danach wieder von vorn. <span id="auto-note-in"></span></p>
   </div>
@@ -535,6 +536,87 @@
       </div>
     </div>
 
+    <!-- Reisewoche -->
+    <div class="variant-block" data-variant="reise">
+      <p class="variant-note" style="margin:0 0 14px;">Kein Rad, keine bekannte Laufstrecke, oft nur ein Hotelzimmer — Ziel ist diese Woche, die Substanz zu halten, nicht Fortschritt zu machen. Ohne oder mit minimalem Equipment machbar.</p>
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Ankunftstag — Reisen verkürzt die Hüfte</p>
+            <p class="daydesc">Nach Flug/Auto/Zug hilft gerade die Hüftbeuger-Dehnung am meisten — passt in jedes Hotelzimmer.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft #1 · ohne Geräte</span>
+            <p class="daytitle">Einbeinig, mit dem, was im Zimmer steht</p>
+            <p class="daydesc">Stuhlkante, Bettkante oder Treppenstufe im Hotel reichen als Erhöhung.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10/Bein</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
+          <div class="daylabel">Mi</div>
+          <div class="daybody">
+            <span class="tag easy">Cardio · flexibel</span>
+            <p class="daytitle">Was vor Ort geht — Lauf, Laufband oder zügig zu Fuß</p>
+            <p class="daydesc">20–30 Min: draußen laufen, Laufband/Ellipse im Hotel-Gym, oder ersatzweise Treppen steigen oder zügig gehen. Hauptsache Puls hoch, egal wie.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Do</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft #2 · reduziert</span>
+            <p class="daytitle">Gleiche Übung, kürzer</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Frei — oder kurze Mobility, wenn Zeit ist</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag easy">Wenn möglich</span>
+            <p class="daytitle">Lauf oder langer Spaziergang vor Ort — sonst frei</p>
+            <p class="daydesc">Neue Stadt/Gegend zu Fuß oder laufend erkunden ist die angenehmste Art, diese Woche noch etwas Ausdauer mitzunehmen. Kein Muss — kein schlechtes Gewissen, wenn's nicht klappt.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
 </div>
 
@@ -546,6 +628,7 @@
       <button class="variant-tab" data-variant="kraft" onclick="setVariant('off','kraft')">Kraft-Fokus</button>
       <button class="variant-tab" data-variant="lauf" onclick="setVariant('off','lauf')">Lauf-Fokus</button>
       <button class="variant-tab" data-variant="erholung" onclick="setVariant('off','erholung')">Erholungswoche</button>
+      <button class="variant-tab" data-variant="reise" onclick="setVariant('off','reise')">Reisewoche</button>
     </div>
     <p class="variant-note">Rotationsprinzip: ohne festen Radsportgruppen-Termin wechseln sich Kraft-Fokus, Lauf-Fokus und eine leichtere Woche ab. <span id="auto-note-off"></span> — das ist ein erster Rahmen, den wir gern verfeinern, sobald klar ist, was im Winter sonst noch möglich ist (z. B. Rolle/Indoor).</p>
   </div>
@@ -583,6 +666,87 @@
         <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
         <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
         <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag rest">Ganz nach Lust</span><p class="daytitle">Optional ein lockerer Lauf oder Spaziergang</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+      </div>
+    </div>
+
+    <!-- Reisewoche -->
+    <div class="variant-block" data-variant="reise">
+      <p class="variant-note" style="margin:0 0 14px;">Kein Rad, keine bekannte Laufstrecke, oft nur ein Hotelzimmer — Ziel ist diese Woche, die Substanz zu halten, nicht Fortschritt zu machen. Ohne oder mit minimalem Equipment machbar.</p>
+      <div class="days">
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Mo</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Ankunftstag — Reisen verkürzt die Hüfte</p>
+            <p class="daydesc">Nach Flug/Auto/Zug hilft gerade die Hüftbeuger-Dehnung am meisten — passt in jedes Hotelzimmer.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Di</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft #1 · ohne Geräte</span>
+            <p class="daytitle">Einbeinig, mit dem, was im Zimmer steht</p>
+            <p class="daydesc">Stuhlkante, Bettkante oder Treppenstufe im Hotel reichen als Erhöhung.</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10/Bein</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
+          <div class="daylabel">Mi</div>
+          <div class="daybody">
+            <span class="tag easy">Cardio · flexibel</span>
+            <p class="daytitle">Was vor Ort geht — Lauf, Laufband oder zügig zu Fuß</p>
+            <p class="daydesc">20–30 Min: draußen laufen, Laufband/Ellipse im Hotel-Gym, oder ersatzweise Treppen steigen oder zügig gehen. Hauptsache Puls hoch, egal wie.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
+          <div class="daylabel">Do</div>
+          <div class="daybody">
+            <span class="tag easy">Kraft #2 · reduziert</span>
+            <p class="daytitle">Gleiche Übung, kürzer</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day rest">
+          <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
+          <div class="daylabel">Fr</div>
+          <div class="daybody">
+            <span class="tag rest">Ruhe / Mobility</span>
+            <p class="daytitle">Frei — oder kurze Mobility, wenn Zeit ist</p>
+            <div class="exercise-list">
+              <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+              <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
+            </div>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
+          </div>
+        </div>
+        <div class="day easy">
+          <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
+          <div class="daylabel">Sa/So</div>
+          <div class="daybody">
+            <span class="tag easy">Wenn möglich</span>
+            <p class="daytitle">Lauf oder langer Spaziergang vor Ort — sonst frei</p>
+            <p class="daydesc">Neue Stadt/Gegend zu Fuß oder laufend erkunden ist die angenehmste Art, diese Woche noch etwas Ausdauer mitzunehmen. Kein Muss — kein schlechtes Gewissen, wenn's nicht klappt.</p>
+            <div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div>
+          </div>
+        </div>
       </div>
     </div>
 
