@@ -190,6 +190,8 @@
   .tl-subheading{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin:18px 0 8px;}
 
   footer{text-align:center;font-size:12px;color:var(--muted);padding:30px 0 10px;}
+  .reset-link{margin-top:6px;background:none;border:none;padding:2px;font-family:inherit;font-size:11.5px;color:var(--muted);text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
+  .reset-link:hover{color:var(--kom);}
 
   .install-banner{display:none;background:var(--go);color:#fff;font-family:'Barlow',sans-serif;}
   .install-banner.show{display:block;}
@@ -957,7 +959,10 @@
 
 </div>
 
-<footer>Fortschritt wird automatisch je Kalenderwoche auf diesem Gerät gespeichert.</footer>
+<footer>
+  Fortschritt wird automatisch je Kalenderwoche auf diesem Gerät gespeichert.
+  <br><button class="reset-link" id="reset-all-btn" type="button">Gesamten Fortschritt zurücksetzen</button>
+</footer>
 
 <div class="modal-overlay" id="ex-modal" role="dialog" aria-modal="true" aria-labelledby="ex-modal-title">
   <div class="modal-card">
@@ -1583,6 +1588,22 @@ const EX_DATA = {
 
   window.renderTrainingLog = renderAll;
   renderAll();
+})();
+
+// --- Reset: gesamten lokal gespeicherten Fortschritt löschen ---
+(function resetAll(){
+  const btn = document.getElementById('reset-all-btn');
+  if(!btn) return;
+  btn.addEventListener('click', () => {
+    const ok = confirm(
+      'Wirklich ALLES zurücksetzen?\n\n' +
+      'Löscht dauerhaft: alle abgehakten Tage und Übungen (auch vergangener Wochen) ' +
+      'und das komplette Trainings-Protokoll. Das kann nicht rückgängig gemacht werden.'
+    );
+    if(!ok) return;
+    try{ localStorage.clear(); }catch(e){}
+    location.reload();
+  });
 })();
 
 // --- PWA: Service Worker registrieren ---
