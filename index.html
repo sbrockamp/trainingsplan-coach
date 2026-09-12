@@ -105,6 +105,19 @@
   .exercise .ex-name{font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);}
   .exercise .ex-detail{font-size:11px;color:var(--muted);margin-top:1px;}
   .exercise .ex-info{margin-left:auto;flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--road);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .exercise .ex-swap{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:center;}
+  .exercise .ex-swap:hover{border-color:var(--road-dim);color:var(--road);}
+  .exercise.swapped{border-style:dashed;}
+  .exercise .ex-swapped-tag{font-size:9.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--road-dim);display:block;margin-top:1px;}
+
+  .swap-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+  .swap-option{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;width:100%;font-family:inherit;}
+  .swap-option:hover{border-color:var(--road-dim);background:#eef2f5;}
+  .swap-option.active{border-color:var(--go);background:var(--go-dim);}
+  .swap-option .icon-box{width:36px;height:36px;flex-shrink:0;border-radius:8px;background:#e7ecf1;color:var(--road);display:flex;align-items:center;justify-content:center;}
+  .swap-option .icon-box svg{width:22px;height:22px;}
+  .swap-option .swap-option-name{font-size:14px;font-weight:600;color:var(--ink);}
+  .swap-option .swap-option-note{font-size:12px;color:var(--muted);margin-top:1px;}
 
   .modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,43,46,.55);z-index:50;align-items:flex-end;justify-content:center;}
   .modal-overlay.show{display:flex;}
@@ -217,6 +230,10 @@
     <symbol id="icon-ex-hip" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 24 L11 29 L9 40"/><path d="M18 24 L27 30 L29 40"/><path d="M4 40 L14 40"/><path d="M24 40 L34 40"/><path d="M18 16 L11 21"/><path d="M18 11.5 L18 24"/></g><circle cx="18" cy="8" r="3.5" fill="currentColor"/><circle cx="27" cy="40" r="2.1" fill="currentColor"/></symbol>
     <symbol id="icon-ex-calf" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M40 4 L40 44"/><path d="M18 15 L38 10"/><path d="M18 15 L38 18"/><path d="M20 24 L26 32 L30 42"/><path d="M20 24 L10 34 L4 42"/><path d="M14 13.5 L20 24"/></g><circle cx="14" cy="10" r="3.5" fill="currentColor"/></symbol>
     <symbol id="icon-ex-spine" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 23 L32 25"/><path d="M32 25 L32 38 L39 41"/><path d="M13 22 L13 40"/><path d="M13 22 Q6 11 15 4"/></g><circle cx="9" cy="23" r="3.3" fill="currentColor"/><circle cx="15" cy="4" r="2.1" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-cossack" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 24 L13 33 L11 43"/><path d="M22 24 L33 27 L43 30"/><path d="M2 43 L20 43"/><path d="M21 15 L15 21"/><path d="M21 11.5 L22 24"/></g><circle cx="21" cy="8" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-curtsy" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M26 23 L30 33 L28 43"/><path d="M26 23 L14 30 L8 40"/><path d="M2 43 L20 43"/><path d="M25 14 L32 18"/><path d="M25 11.5 L26 23"/></g><circle cx="25" cy="8" r="3.5" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-glutebridge" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 36 L28 28"/><path d="M28 28 L31 40 L39 41"/><path d="M28 28 L44 20"/><path d="M2 41 L39 41"/></g><circle cx="8" cy="36" r="3.3" fill="currentColor"/></symbol>
+    <symbol id="icon-ex-pistol" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3 L5 45"/><path d="M21 26 L16 34 L14 44"/><path d="M21 26 L32 30 L39 27"/><path d="M20 16 L6 21"/><path d="M20 13.5 L21 26"/></g><circle cx="20" cy="10" r="3.5" fill="currentColor"/></symbol>
   </defs>
 </svg>
 
@@ -295,7 +312,7 @@
             <div class="exercise-list">
               <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div>
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 8–10/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
             </div>
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
@@ -329,7 +346,7 @@
             <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
             <div class="exercise-list">
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">2× 10/Bein</div></div></div>
               <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
@@ -376,7 +393,7 @@
             <div class="exercise-list">
               <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 12/Bein, etwas mehr Gewicht</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">3× 12/Bein, etwas mehr Gewicht</div></div></div>
             </div>
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
@@ -410,7 +427,7 @@
             <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
             <div class="exercise-list">
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">2× 10/Bein</div></div></div>
               <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
@@ -457,7 +474,7 @@
             <div class="exercise-list">
               <div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">3× 10–12/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 12/Bein</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">3× 12/Bein</div></div></div>
             </div>
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
@@ -491,7 +508,7 @@
             <p class="daydesc">Bewusst leichter als Dienstag — Erhaltungsdosis, nicht Ermüdung vor dem langen Ausritt.</p>
             <div class="exercise-list">
               <div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div>
-              <div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">2× 10/Bein</div></div></div>
+              <div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">2× 10/Bein</div></div></div>
               <div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div>
               <div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div>
@@ -683,9 +700,9 @@
     <div class="variant-block" data-variant="kraft">
       <div class="days">
         <div class="day rest" data-type="mobility" data-hours="0.15"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
-        <div class="day easy" data-type="kraft" data-hours="0.6"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft #1</span><p class="daytitle">Grundlagenaufbau</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">4× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.6"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft #1</span><p class="daytitle">Grundlagenaufbau</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">4× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
         <div class="day rest" data-type="rad" data-hours="1.0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Locker</span><p class="daytitle">Rad drinnen/draußen oder Ruhe</p><p class="daydesc">Wetterabhängig — kein Muss, eher ein Angebot für aktive Erholung.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
-        <div class="day easy" data-type="kraft" data-hours="0.45"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag easy">Kraft #2</span><p class="daytitle">Gleiche Übungen, zweite Einheit</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.45"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag easy">Kraft #2</span><p class="daytitle">Gleiche Übungen, zweite Einheit</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div><div class="exercise" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">3× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
         <div class="day rest" data-type="mobility" data-hours="0.15"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="exercise-list"><div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
         <div class="day easy" data-type="lauf" data-hours="1.0"><div class="icon-box easy"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag easy">Lauf · ~10 km</span><p class="daytitle">Locker, wenn Zeit/Wetter passt</p><p class="daydesc">Optional — kein Muss in dieser Variante, aber eine gute Gelegenheit, die Grundlagenausdauer zu halten.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
       </div>
@@ -994,6 +1011,18 @@
         <button class="timer-btn" id="ex-timer-reset" aria-label="Timer zurücksetzen">↺</button>
       </div>
     </div>
+    <div class="modal-section" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
+      <button class="timer-btn" id="ex-modal-swap-btn" style="width:100%;">⇄ Andere Übung wählen (z. B. ohne Erhöhung/Gerät)</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="swap-modal" role="dialog" aria-modal="true" aria-labelledby="swap-modal-title">
+  <div class="modal-card">
+    <button class="modal-close" id="swap-modal-close" aria-label="Schließen">×</button>
+    <h3 id="swap-modal-title" style="font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700;margin:0 0 4px;">Übung ersetzen</h3>
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px;">Ersetzt <b id="swap-modal-original"></b> ab jetzt überall in der App — bis du es hier wieder änderst.</p>
+    <div class="swap-list" id="swap-modal-list"></div>
   </div>
 </div>
 
@@ -1185,8 +1214,120 @@ const EX_DATA = {
     ],
     mistakes: ['Rotation kommt aus der Hüfte statt aus der Brustwirbelsäule.', 'Zu schnell/mit Schwung statt kontrolliert.'],
     tip: 'Langsam und kontrolliert ausführen, kein Schwung — Qualität vor Wiederholungszahl.'
+  },
+  cossack: {
+    name: 'Cossack Squat',
+    why: 'Einbeinige Kraft in der Seitwärts-Ebene — ergänzt Split Squat und Step-up um seitliche Stabilität, die beim Kurvenfahren und auf unebenem Untergrund gebraucht wird. Kein Gerät, keine Deckenhöhe nötig — passt in jeden Kellerraum.',
+    steps: [
+      'Breiten Stand einnehmen, Zehen leicht nach außen gedreht.',
+      'Gewicht auf ein Bein verlagern und in die Hocke gehen.',
+      'Das andere Bein bleibt gestreckt zur Seite, Ferse bleibt am Boden.',
+      'Becken tief halten, Brust aufrecht, über die Ferse des gebeugten Beins zurück zur Mitte drücken.'
+    ],
+    mistakes: ['Ferse des gestreckten Beins hebt vom Boden ab.', 'Rücken rundet sich beim tiefen Absenken.'],
+    tip: 'Am Anfang nur so tief gehen, wie die Beweglichkeit erlaubt — die Tiefe kommt mit der Zeit von allein.'
+  },
+  curtsy: {
+    name: 'Curtsy Lunge',
+    why: 'Ebenerdiger Ersatz für Step-up, wenn keine Erhöhung oder Deckenhöhe zur Verfügung steht — trainiert dieselbe Antriebskraft aus Hüfte und Gesäß, die beim Wiederbeschleunigen am Berg gebraucht wird.',
+    steps: [
+      'Aufrecht stehen.',
+      'Ein Bein diagonal hinter das andere kreuzen, wie bei einem Knicks.',
+      'Beide Knie beugen, bis sich das hintere Knie dem Boden nähert.',
+      'Über die vordere Ferse zurück nach oben drücken.'
+    ],
+    mistakes: ['Oberkörper kippt zur Seite statt aufrecht zu bleiben.', 'Vorderes Knie fällt nach innen.'],
+    tip: 'Für mehr Gleichgewicht die Arme seitlich ausstrecken oder eine Wand leicht berühren.'
+  },
+  glutebridge: {
+    name: 'Einbeinige Gesäßbrücke',
+    why: 'Komplett am Boden liegend — keine Deckenhöhe, kein Gleichgewicht nötig. Trainiert die Hüftstreckung, die beim Antritt am Berg die Kraft aufs Pedal bringt.',
+    steps: [
+      'Rückenlage, ein Bein aufgestellt, das andere gestreckt in der Luft.',
+      'Über die Ferse des aufgestellten Beins die Hüfte nach oben drücken, bis Schulter-Hüfte-Knie eine Linie bilden.',
+      'Oben kurz halten, dann kontrolliert absenken.'
+    ],
+    mistakes: ['Der untere Rücken übernimmt die Arbeit statt des Gesäßes.', 'Die Hüfte hängt zu einer Seite durch.'],
+    tip: 'Das Gesäß oben bewusst anspannen — das ist der Punkt, an dem die Übung wirkt.'
+  },
+  pistol: {
+    name: 'Assistierte Pistolenkniebeuge',
+    why: 'Die anspruchsvollste einbeinige Übung im Pool — für Tage mit mehr Kraftreserve. Mit Festhalten an einem Türrahmen komplett zu Hause machbar, kein Gerät nötig.',
+    steps: [
+      'An einem Türrahmen oder stabilen Möbelstück festhalten.',
+      'Ein Bein nach vorne strecken, auf dem anderen so tief wie möglich in die Hocke gehen.',
+      'Über die Ferse zurück nach oben drücken, mit den Armen nur so viel Unterstützung wie nötig.'
+    ],
+    mistakes: ['Ferse hebt ab, Gewicht verlagert sich auf den Vorfuß.', 'Zu viel Zug mit den Armen statt Beinarbeit.'],
+    tip: 'Nicht die volle Tiefe erzwingen — lieber sauber bis zur eigenen Grenze, dann langsam steigern.'
   }
 };
+
+// Übungen, die sich gegenseitig ersetzen lassen (gleiche Trainingsfunktion, unterschiedliche
+// Anforderungen an Equipment/Platz) — Grundlage für den Tausch-Dialog auf jeder Übungskarte.
+const EX_SWAP_GROUPS = {
+  bein: ['splitsquat', 'stepup', 'legpress', 'cossack', 'curtsy', 'glutebridge', 'pistol'],
+  mobility: ['hip', 'calf', 'spine']
+};
+const EX_SWAP_NOTE = {
+  splitsquat: 'Braucht eine Erhöhung (Bank/Stufe/Stuhlkante).',
+  stepup: 'Braucht eine Erhöhung UND genug Deckenhöhe.',
+  legpress: 'Braucht eine Beinpresse im Fitnessstudio.',
+  cossack: 'Kein Gerät, kein Platzbedarf nach oben.',
+  curtsy: 'Kein Gerät, ebenerdig.',
+  glutebridge: 'Kein Gerät, liegend — auch bei wenig Platz/Deckenhöhe.',
+  pistol: 'Kein Gerät, nur ein Türrahmen o. Ä. zum Festhalten.',
+  hip: 'Kein Gerät.', calf: 'Kein Gerät.', spine: 'Kein Gerät.'
+};
+function exSwapGroupFor(key){
+  for(const g in EX_SWAP_GROUPS){ if(EX_SWAP_GROUPS[g].includes(key)) return g; }
+  return null;
+}
+
+function getActiveSwap(origKey){
+  try{ return localStorage.getItem('swap:'+origKey) || null; }catch(e){ return null; }
+}
+function setActiveSwap(origKey, newKey){
+  try{
+    if(!newKey || newKey === origKey) localStorage.removeItem('swap:'+origKey);
+    else localStorage.setItem('swap:'+origKey, newKey);
+  }catch(e){}
+}
+function effectiveExKey(origKey){
+  const s = getActiveSwap(origKey);
+  return (s && EX_DATA[s]) ? s : origKey;
+}
+
+// Updates one exercise card's icon/name/data-ex to whatever is currently the effective
+// (possibly swapped) exercise for its original slot, and refreshes its "erledigt"-Häkchen
+// styling for that (now current) exercise.
+function applyEffectiveExercise(el){
+  const orig = el.dataset.exOrig || el.dataset.ex;
+  el.dataset.exOrig = orig;
+  const eff = effectiveExKey(orig);
+  el.dataset.ex = eff;
+  const data = EX_DATA[eff];
+  if(data){
+    const use = el.querySelector('svg use');
+    if(use) use.setAttribute('href', '#icon-ex-' + eff);
+    const nameEl = el.querySelector('.ex-name');
+    if(nameEl) nameEl.textContent = data.name;
+  }
+  const swapped = eff !== orig;
+  el.classList.toggle('swapped', swapped);
+  let tag = el.querySelector('.ex-swapped-tag');
+  if(swapped){
+    if(!tag){
+      tag = document.createElement('span');
+      tag.className = 'ex-swapped-tag';
+      const detailEl = el.querySelector('.ex-detail');
+      if(detailEl) detailEl.insertAdjacentElement('afterend', tag);
+    }
+    tag.textContent = 'Ersetzt';
+  } else if(tag){
+    tag.remove();
+  }
+}
 
 (function exerciseModal(){
   const overlay = document.getElementById('ex-modal');
@@ -1362,6 +1503,7 @@ const EX_DATA = {
   }
 
   document.querySelectorAll('.exercise[data-ex]').forEach(el => {
+    applyEffectiveExercise(el);
     const badge = document.createElement('span');
     badge.className = 'ex-info';
     badge.textContent = 'i';
@@ -1379,7 +1521,55 @@ const EX_DATA = {
   });
   closeBtn.addEventListener('click', closeExercise);
   overlay.addEventListener('click', (e) => { if(e.target === overlay) closeExercise(); });
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeExercise(); });
+  document.addEventListener('keydown', (e) => {
+    if(e.key !== 'Escape') return;
+    if(swapOverlayShown()) closeSwapModal(); else closeExercise();
+  });
+  function swapOverlayShown(){ return document.getElementById('swap-modal').classList.contains('show'); }
+
+  // --- Übung ersetzen (Tausch-Modal) ---
+  const swapOverlay = document.getElementById('swap-modal');
+  const swapCloseBtn = document.getElementById('swap-modal-close');
+  const swapOriginalEl = document.getElementById('swap-modal-original');
+  const swapListEl = document.getElementById('swap-modal-list');
+  const swapBtn = document.getElementById('ex-modal-swap-btn');
+
+  function openSwapModal(){
+    if(!currentExerciseEl) return;
+    const orig = currentExerciseEl.dataset.exOrig || currentExerciseEl.dataset.ex;
+    const group = exSwapGroupFor(orig);
+    if(!group) return;
+    const eff = effectiveExKey(orig);
+    swapOriginalEl.textContent = EX_DATA[orig] ? EX_DATA[orig].name : orig;
+
+    swapListEl.innerHTML = '';
+    EX_SWAP_GROUPS[group].forEach(candidateKey => {
+      const data = EX_DATA[candidateKey];
+      if(!data) return;
+      const isOriginal = candidateKey === orig;
+      const isActive = candidateKey === eff;
+      const btn = document.createElement('button');
+      btn.className = 'swap-option' + (isActive ? ' active' : '');
+      btn.innerHTML = '<div class="icon-box"><svg><use href="#icon-ex-' + candidateKey + '"/></svg></div>'
+        + '<div><div class="swap-option-name">' + data.name + (isOriginal ? ' (ursprünglich)' : '') + '</div>'
+        + '<div class="swap-option-note">' + (EX_SWAP_NOTE[candidateKey] || '') + '</div></div>';
+      btn.addEventListener('click', () => {
+        setActiveSwap(orig, isOriginal ? null : candidateKey);
+        document.querySelectorAll('.exercise[data-ex-orig="'+orig+'"]').forEach(applyEffectiveExercise);
+        closeSwapModal();
+      });
+      swapListEl.appendChild(btn);
+    });
+
+    closeExercise();
+    swapOverlay.classList.add('show');
+  }
+  function closeSwapModal(){
+    swapOverlay.classList.remove('show');
+  }
+  swapBtn.addEventListener('click', openSwapModal);
+  swapCloseBtn.addEventListener('click', closeSwapModal);
+  swapOverlay.addEventListener('click', (e) => { if(e.target === swapOverlay) closeSwapModal(); });
 
   timerStartPause.addEventListener('click', startPauseTimer);
   timerMinus.addEventListener('click', () => adjustTimer(-15));
