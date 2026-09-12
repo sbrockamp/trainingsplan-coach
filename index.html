@@ -359,8 +359,7 @@
       <button class="app-tab active" data-apptab="training" onclick="setAppTab('training')">Training</button>
       <button class="app-tab" data-apptab="protokoll" onclick="setAppTab('protokoll')">Trainingsprotokoll</button>
       <button class="app-tab" data-apptab="ernaehrung" onclick="setAppTab('ernaehrung')">Ernährung</button>
-      <button class="app-tab" data-apptab="einkaufsliste" onclick="setAppTab('einkaufsliste')">Einkaufsliste</button>
-      <button class="app-tab" data-apptab="rezepte" onclick="setAppTab('rezepte')">Rezepte</button>
+      <button class="app-tab" data-apptab="einkaufsliste" onclick="setAppTab('einkaufsliste')">Rezepte &amp; Einkaufsliste</button>
       <button class="app-tab" data-apptab="uebungsliste" onclick="setAppTab('uebungsliste')">Übungsliste</button>
     </div>
   </div>
@@ -948,41 +947,6 @@
 
 <div class="app-tab-panel" data-apptab="einkaufsliste" style="display:none;">
 <section>
-  <h2>Einkaufsliste — Aldi &amp; Lidl</h2>
-  <div class="shoplist">
-    <div class="store"><h3>Milchprodukte &amp; Eiweiß</h3><ul>
-      <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
-      <li><input type="checkbox"/> Skyr, 2–3 Becher</li>
-      <li><input type="checkbox"/> Eier, 10er</li>
-      <li><input type="checkbox"/> Hähnchenbrust</li>
-      <li><input type="checkbox"/> TK-Lachsfilet</li>
-      <li><input type="checkbox"/> Thunfisch in Dosen</li>
-    </ul></div>
-    <div class="store"><h3>Getreide &amp; Vorrat</h3><ul>
-      <li><input type="checkbox"/> Haferflocken (kernig)</li>
-      <li><input type="checkbox"/> Reis oder Vollkornnudeln</li>
-      <li><input type="checkbox"/> Linsen/Kichererbsen</li>
-      <li><input type="checkbox"/> Honig</li>
-      <li><input type="checkbox"/> Datteln</li>
-    </ul></div>
-    <div class="store"><h3>Obst, Gemüse &amp; TK</h3><ul>
-      <li><input type="checkbox"/> Bananen</li>
-      <li><input type="checkbox"/> TK-Beerenmischung</li>
-      <li><input type="checkbox"/> Spinat</li>
-      <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
-      <li><input type="checkbox"/> Saisonales Gemüse</li>
-    </ul></div>
-    <div class="store"><h3>Extras</h3><ul>
-      <li><input type="checkbox"/> Mandeln/Walnüsse</li>
-      <li><input type="checkbox"/> Chiasamen oder Leinsamen</li>
-      <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
-    </ul></div>
-  </div>
-</section>
-</div>
-
-<div class="app-tab-panel" data-apptab="rezepte" style="display:none;">
-<section>
   <h2>Rezepte</h2>
   <div class="recipe">
     <span class="when">Morgens · 5 Min · ohne Kochen</span>
@@ -1060,7 +1024,40 @@
     </div>
   </div>
 </section>
+<section>
+  <h2>Einkaufsliste — Aldi &amp; Lidl</h2>
+  <div class="shoplist">
+    <div class="store"><h3>Milchprodukte &amp; Eiweiß</h3><ul>
+      <li><input type="checkbox"/> Magerquark (Milsani/Milbona)</li>
+      <li><input type="checkbox"/> Skyr, 2–3 Becher</li>
+      <li><input type="checkbox"/> Eier, 10er</li>
+      <li><input type="checkbox"/> Hähnchenbrust</li>
+      <li><input type="checkbox"/> TK-Lachsfilet</li>
+      <li><input type="checkbox"/> Thunfisch in Dosen</li>
+    </ul></div>
+    <div class="store"><h3>Getreide &amp; Vorrat</h3><ul>
+      <li><input type="checkbox"/> Haferflocken (kernig)</li>
+      <li><input type="checkbox"/> Reis oder Vollkornnudeln</li>
+      <li><input type="checkbox"/> Linsen/Kichererbsen</li>
+      <li><input type="checkbox"/> Honig</li>
+      <li><input type="checkbox"/> Datteln</li>
+    </ul></div>
+    <div class="store"><h3>Obst, Gemüse &amp; TK</h3><ul>
+      <li><input type="checkbox"/> Bananen</li>
+      <li><input type="checkbox"/> TK-Beerenmischung</li>
+      <li><input type="checkbox"/> Spinat</li>
+      <li><input type="checkbox"/> Zwiebeln/Knoblauch</li>
+      <li><input type="checkbox"/> Saisonales Gemüse</li>
+    </ul></div>
+    <div class="store"><h3>Extras</h3><ul>
+      <li><input type="checkbox"/> Mandeln/Walnüsse</li>
+      <li><input type="checkbox"/> Chiasamen oder Leinsamen</li>
+      <li><input type="checkbox"/> Salz (DIY-Elektrolytflasche)</li>
+    </ul></div>
+  </div>
+</section>
 </div>
+
 
 <div class="app-tab-panel" data-apptab="uebungsliste" style="display:none;">
 <section>
@@ -1290,7 +1287,7 @@ let CURRENT_WEEK_KEY = '';
 (function init(){
   let savedTab = null;
   try{ savedTab = localStorage.getItem('activeAppTab'); }catch(e){}
-  const validTabs = ['training','protokoll','ernaehrung','einkaufsliste','rezepte','uebungsliste'];
+  const validTabs = ['training','protokoll','ernaehrung','einkaufsliste','uebungsliste'];
   setAppTab(validTabs.includes(savedTab) ? savedTab : 'training');
 
   const now = new Date();
