@@ -100,6 +100,7 @@
   .exercise-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
   .exercise{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1 1 155px;cursor:pointer;transition:border-color .15s,background .15s;}
   .exercise:hover, .exercise:focus-visible{border-color:var(--road-dim);background:#eef2f5;outline:none;}
+  .exercise.done{background:var(--go-dim);border-color:var(--go);}
   .exercise svg{width:26px;height:26px;flex-shrink:0;color:var(--road);}
   .exercise .ex-name{font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);}
   .exercise .ex-detail{font-size:11px;color:var(--muted);margin-top:1px;}
@@ -163,6 +164,30 @@
   .recipe h4{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--road);margin:0 0 6px;}
   .recipe ul, .recipe ol{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink);line-height:1.55;}
   .recipe ol li{margin-bottom:3px;}
+
+  .tl-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+  .tl-stat{flex:1 1 130px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;}
+  .tl-stat .tl-stat-label{font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+  .tl-stat .tl-stat-value{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:var(--road);margin-top:2px;}
+  .tl-stat.tl-total .tl-stat-value{color:var(--ink);}
+
+  .tl-gap-ok{background:var(--go-dim);border:1px solid var(--go);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#1d4f3a;margin-bottom:16px;}
+  .tl-gap-warn{background:var(--kom-dim);border:1px solid var(--kom);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#7a2a20;margin-bottom:16px;}
+  .tl-gap-ok b, .tl-gap-warn b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
+
+  .tl-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .tl-table th{text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line);}
+  .tl-table td{padding:8px;border-bottom:1px solid #f0f0ee;vertical-align:middle;}
+  .tl-table tr:last-child td{border-bottom:none;}
+  .tl-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tl-week-label{font-weight:600;color:var(--ink);white-space:nowrap;}
+  .tl-pill{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:20px;background:#ececeb;color:var(--muted);}
+  .tl-gap-cell{font-weight:600;}
+  .tl-gap-cell.short{color:var(--kom);}
+  .tl-gap-cell.met{color:var(--go);}
+  .tl-empty{font-size:13.5px;color:var(--muted);padding:10px 0;}
+  .tl-months{margin-top:18px;}
+  .tl-subheading{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin:18px 0 8px;}
 
   footer{text-align:center;font-size:12px;color:var(--muted);padding:30px 0 10px;}
 
@@ -245,7 +270,7 @@
     <!-- Woche 1 -->
     <div class="variant-block" data-variant="w1">
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -259,7 +284,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.5">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -273,7 +298,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="2.5">
           <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Mi<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -283,7 +308,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="rad" data-hours="2.5">
           <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Do<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -293,7 +318,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.4">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -310,7 +335,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="4.5">
           <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -326,7 +351,7 @@
     <!-- Woche 2 -->
     <div class="variant-block" data-variant="w2">
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -340,7 +365,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.5">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -354,7 +379,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="2.5">
           <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Mi<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -364,7 +389,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="2.5">
           <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Do<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -374,7 +399,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.4">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -391,7 +416,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="4.5">
           <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -407,7 +432,7 @@
     <!-- Woche 3 -->
     <div class="variant-block" data-variant="w3">
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -421,7 +446,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.5">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -435,7 +460,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="2.5">
           <div class="icon-box hill"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Mi<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -445,7 +470,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="rad" data-hours="2.5">
           <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Do<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -455,7 +480,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.4">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -472,7 +497,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day hill">
+        <div class="day hill" data-type="rad" data-hours="4.5">
           <div class="icon-box long"><svg style="transform:rotate(-14deg)"><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -488,7 +513,7 @@
     <!-- Erholung -->
     <div class="variant-block" data-variant="erholung">
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="ruhe" data-hours="0">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -498,7 +523,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.15">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -511,7 +536,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="rad" data-hours="2.3">
           <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Mi<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -521,7 +546,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="rad" data-hours="2.3">
           <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Do<small>Radsportgruppe</small></div>
           <div class="daybody">
@@ -531,7 +556,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day rest">
+        <div class="day rest" data-type="ruhe" data-hours="0">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -540,7 +565,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="rad" data-hours="1.5">
           <div class="icon-box easy"><svg><use href="#icon-bike"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -557,7 +582,7 @@
     <div class="variant-block" data-variant="reise">
       <p class="variant-note" style="margin:0 0 14px;">Kein Rad, keine bekannte Laufstrecke, oft nur ein Hotelzimmer — Ziel ist diese Woche, die Substanz zu halten, nicht Fortschritt zu machen. Ohne oder mit minimalem Equipment machbar.</p>
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -571,7 +596,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.4">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -585,7 +610,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="cardio" data-hours="0.4">
           <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
           <div class="daylabel">Mi</div>
           <div class="daybody">
@@ -595,7 +620,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.3">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Do</div>
           <div class="daybody">
@@ -608,7 +633,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -621,7 +646,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="cardio" data-hours="0.75">
           <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -655,34 +680,34 @@
 
     <div class="variant-block" data-variant="kraft">
       <div class="days">
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
-        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft #1</span><p class="daytitle">Grundlagenaufbau</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">4× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Locker</span><p class="daytitle">Rad drinnen/draußen oder Ruhe</p><p class="daydesc">Wetterabhängig — kein Muss, eher ein Angebot für aktive Erholung.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
-        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag easy">Kraft #2</span><p class="daytitle">Gleiche Übungen, zweite Einheit</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="exercise-list"><div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
-        <div class="day easy"><div class="icon-box easy"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag easy">Lauf · ~10 km</span><p class="daytitle">Locker, wenn Zeit/Wetter passt</p><p class="daydesc">Optional — kein Muss in dieser Variante, aber eine gute Gelegenheit, die Grundlagenausdauer zu halten.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="mobility" data-hours="0.15"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.6"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft #1</span><p class="daytitle">Grundlagenaufbau</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">4× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">4× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="rad" data-hours="1.0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Locker</span><p class="daytitle">Rad drinnen/draußen oder Ruhe</p><p class="daydesc">Wetterabhängig — kein Muss, eher ein Angebot für aktive Erholung.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.45"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag easy">Kraft #2</span><p class="daytitle">Gleiche Übungen, zweite Einheit</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3× 8–10/Bein</div></div></div><div class="exercise" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">3× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="mobility" data-hours="0.15"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="exercise-list"><div class="exercise" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">2× 8–10/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="lauf" data-hours="1.0"><div class="icon-box easy"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag easy">Lauf · ~10 km</span><p class="daytitle">Locker, wenn Zeit/Wetter passt</p><p class="daydesc">Optional — kein Muss in dieser Variante, aber eine gute Gelegenheit, die Grundlagenausdauer zu halten.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
       </div>
     </div>
 
     <div class="variant-block" data-variant="lauf">
       <div class="days">
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
-        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft</span><p class="daytitle">Reduziertes Pensum</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10–12/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
-        <div class="day hill"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Lockeres Tempo</p><p class="daydesc">Grundlagenlauf — Gespräch sollte noch möglich sein.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Erholung vom Lauf</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
-        <div class="day easy"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag easy">Kraft (2. Einheit)</span><p class="daytitle">Reduziertes Pensum — oder Ruhe, je nach Wochenform</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
-        <div class="day hill"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Oder Rad locker, wenn Wetter passt</p><p class="daydesc">Zweiter Lauf der Woche für die Grundlagenausdauer — flexibel gegen eine lockere Radfahrt tauschbar.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="mobility" data-hours="0.1"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Wenn früh wach, kurze Runde — sonst frei</p><div class="exercise-list"><div class="exercise" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">2× 30–45 Sek/Seite</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.35"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag easy">Kraft</span><p class="daytitle">Reduziertes Pensum</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10–12/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10–12/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day hill" data-type="lauf" data-hours="1.0"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Lockeres Tempo</p><p class="daydesc">Grundlagenlauf — Gespräch sollte noch möglich sein.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="ruhe" data-hours="0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Erholung vom Lauf</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day easy" data-type="kraft" data-hours="0.3"><div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag easy">Kraft (2. Einheit)</span><p class="daytitle">Reduziertes Pensum — oder Ruhe, je nach Wochenform</p><div class="exercise-list"><div class="exercise" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">2× 10/Bein</div></div></div><div class="exercise" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">2× 10/Bein</div></div></div></div><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day hill" data-type="lauf" data-hours="1.0"><div class="icon-box hill"><svg><use href="#icon-run"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag hill">Lauf · ~10 km</span><p class="daytitle">Oder Rad locker, wenn Wetter passt</p><p class="daydesc">Zweiter Lauf der Woche für die Grundlagenausdauer — flexibel gegen eine lockere Radfahrt tauschbar.</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
       </div>
     </div>
 
     <div class="variant-block" data-variant="erholung">
       <div class="days">
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag rest">Kraft leicht oder aus</span><p class="daytitle">Nur wenn es sich gut anfühlt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz lockere Bewegung, wenn überhaupt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
-        <div class="day rest"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag rest">Ganz nach Lust</span><p class="daytitle">Optional ein lockerer Lauf oder Spaziergang</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="ruhe" data-hours="0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mo</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="kraft" data-hours="0.2"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Di</div><div class="daybody"><span class="tag rest">Kraft leicht oder aus</span><p class="daytitle">Nur wenn es sich gut anfühlt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="ruhe" data-hours="0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Mi</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz lockere Bewegung, wenn überhaupt</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="mobility" data-hours="0.15"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Do</div><div class="daybody"><span class="tag rest">Ruhe / Mobility</span><p class="daytitle">Kurze Runde oder frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="ruhe" data-hours="0"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Fr</div><div class="daybody"><span class="tag rest">Ruhe</span><p class="daytitle">Ganz frei</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div></div></div>
+        <div class="day rest" data-type="lauf" data-hours="0.75"><div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div><div class="daylabel">Sa/So</div><div class="daybody"><span class="tag rest">Ganz nach Lust</span><p class="daytitle">Optional ein lockerer Lauf oder Spaziergang</p><div class="checkrow"><input type="checkbox" class="trackbox" data-day="weekend"/><label>Erledigt</label></div></div></div>
       </div>
     </div>
 
@@ -690,7 +715,7 @@
     <div class="variant-block" data-variant="reise">
       <p class="variant-note" style="margin:0 0 14px;">Kein Rad, keine bekannte Laufstrecke, oft nur ein Hotelzimmer — Ziel ist diese Woche, die Substanz zu halten, nicht Fortschritt zu machen. Ohne oder mit minimalem Equipment machbar.</p>
       <div class="days">
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Mo</div>
           <div class="daybody">
@@ -704,7 +729,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="mon"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.4">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Di</div>
           <div class="daybody">
@@ -718,7 +743,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="tue"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="cardio" data-hours="0.4">
           <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
           <div class="daylabel">Mi</div>
           <div class="daybody">
@@ -728,7 +753,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="wed"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="kraft" data-hours="0.3">
           <div class="icon-box strength"><svg><use href="#icon-strength"/></svg></div>
           <div class="daylabel">Do</div>
           <div class="daybody">
@@ -741,7 +766,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="thu"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day rest">
+        <div class="day rest" data-type="mobility" data-hours="0.2">
           <div class="icon-box rest"><svg><use href="#icon-rest"/></svg></div>
           <div class="daylabel">Fr</div>
           <div class="daybody">
@@ -754,7 +779,7 @@
             <div class="checkrow"><input type="checkbox" class="trackbox" data-day="fri"/><label>Erledigt</label></div>
           </div>
         </div>
-        <div class="day easy">
+        <div class="day easy" data-type="cardio" data-hours="0.75">
           <div class="icon-box easy"><svg><use href="#icon-run"/></svg></div>
           <div class="daylabel">Sa/So</div>
           <div class="daybody">
@@ -769,6 +794,13 @@
 
   </section>
 </div>
+
+<section>
+  <h2>Trainings-Protokoll</h2>
+  <div id="tl-week-summary"></div>
+  <div id="tl-history"></div>
+  <div id="tl-months"></div>
+</section>
 
 <section>
   <h2>Berge &amp; Erholung</h2>
@@ -971,6 +1003,38 @@ function getISOWeek(date){
   return {year: d.getUTCFullYear(), week: week};
 }
 
+// Thursday of a given ISO year/week — the ISO-standard anchor day for that week,
+// used to decide which season a given (year, week) falls into.
+function isoWeekThursday(year, week){
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const jan4Day = (jan4.getUTCDay() + 6) % 7;
+  const week1Monday = new Date(jan4);
+  week1Monday.setUTCDate(jan4.getUTCDate() - jan4Day);
+  const target = new Date(week1Monday);
+  target.setUTCDate(week1Monday.getUTCDate() + (week - 1) * 7 + 3);
+  return target;
+}
+
+const IN_VARIANTS = ['w1','w2','w3','erholung'];
+const IN_LABELS = {w1:'Woche 1',w2:'Woche 2',w3:'Woche 3',erholung:'Erholungswoche',reise:'Reisewoche'};
+const OFF_VARIANTS = ['kraft','lauf','erholung'];
+const OFF_LABELS = {kraft:'Kraft-Fokus',lauf:'Lauf-Fokus',erholung:'Erholungswoche',reise:'Reisewoche'};
+
+// Which season+variant the app would auto-suggest for an arbitrary (year, week) —
+// same rotation the header tabs use, factored out so the training log can compute
+// an "expected hours" baseline for past weeks too, not just the current one.
+function seasonAndVariantForWeek(year, week){
+  const thursday = isoWeekThursday(year, week);
+  const month = thursday.getUTCMonth() + 1;
+  if(month >= 5 && month <= 9){
+    return {season:'in', variant: IN_VARIANTS[(week-1) % 4]};
+  }
+  return {season:'off', variant: OFF_VARIANTS[(week-1) % 3]};
+}
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+function localDateStr(d){ return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
+
 function setSeason(season){
   document.querySelectorAll('.season-panel').forEach(p=> p.style.display = (p.dataset.season===season ? 'block':'none'));
   document.querySelectorAll('.season-tab').forEach(b=> b.classList.toggle('active', b.dataset.season===season));
@@ -981,48 +1045,64 @@ function setVariant(season, variant){
   panel.querySelectorAll('.variant-tab').forEach(b=> b.classList.toggle('active', b.dataset.variant===variant));
 }
 
+let CURRENT_WEEK_KEY = '';
+
 (function init(){
   const now = new Date();
   const month = now.getMonth()+1;
   const inSeason = (month>=5 && month<=9);
   const iso = getISOWeek(now);
 
-  const inVariants = ['w1','w2','w3','erholung'];
-  const inLabels = {w1:'Woche 1',w2:'Woche 2',w3:'Woche 3',erholung:'Erholungswoche'};
-  const variantIn = inVariants[(iso.week-1) % 4];
+  const variantInResolved = IN_VARIANTS[(iso.week-1) % 4];
+  const variantOffResolved = OFF_VARIANTS[(iso.week-1) % 3];
 
-  const offVariants = ['kraft','lauf','erholung'];
-  const offLabels = {kraft:'Kraft-Fokus',lauf:'Lauf-Fokus',erholung:'Erholungswoche'};
-  const variantOff = offVariants[(iso.week-1) % 3];
-
-  setVariant('in', variantIn);
-  setVariant('off', variantOff);
+  setVariant('in', variantInResolved);
+  setVariant('off', variantOffResolved);
   setSeason(inSeason ? 'in' : 'off');
 
-  document.getElementById('auto-note-in').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + inLabels[variantIn] + '.';
-  document.getElementById('auto-note-off').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + offLabels[variantOff] + '.';
+  document.getElementById('auto-note-in').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + IN_LABELS[variantInResolved] + '.';
+  document.getElementById('auto-note-off').textContent = 'Für diese Kalenderwoche vorgeschlagen: ' + OFF_LABELS[variantOffResolved] + '.';
 
   // Fortschritt je echter Kalenderwoche speichern, unabhängig von der gewählten Variante.
   // localStorage ist pro Gerät/Browser — kein automatischer Sync zwischen Handy und Laptop
   // (siehe README für den Stand dazu).
   const weekKey = iso.year + '-W' + iso.week;
+  CURRENT_WEEK_KEY = weekKey;
   const boxes = document.querySelectorAll('.trackbox');
+
   function loadState(){
     for(const box of boxes){
       try{
-        const val = localStorage.getItem('ck:'+weekKey+':'+box.dataset.day);
-        if(val === 'true'){ box.checked = true; }
+        const raw = localStorage.getItem('ck:'+weekKey+':'+box.dataset.day);
+        if(!raw) continue;
+        if(raw === 'true'){ box.checked = true; continue; } // legacy plain-boolean entries
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.checked){ box.checked = true; }
       }catch(e){}
     }
   }
+
+  function commitDayBox(box){
+    try{
+      if(box.checked){
+        const dayEl = box.closest('.day');
+        const type = dayEl ? dayEl.dataset.type : undefined;
+        const hours = dayEl ? parseFloat(dayEl.dataset.hours) : undefined;
+        localStorage.setItem('ck:'+weekKey+':'+box.dataset.day, JSON.stringify({
+          checked: true, type, hours, date: localDateStr(new Date())
+        }));
+      } else {
+        localStorage.removeItem('ck:'+weekKey+':'+box.dataset.day);
+      }
+      document.querySelectorAll('.trackbox[data-day="'+box.dataset.day+'"]').forEach(b=>{ if(b!==box) b.checked = box.checked; });
+      if(window.renderTrainingLog) window.renderTrainingLog();
+    }catch(e){ console.error('storage error', e); }
+  }
+
   boxes.forEach(box=>{
-    box.addEventListener('change', ()=>{
-      try{
-        localStorage.setItem('ck:'+weekKey+':'+box.dataset.day, String(box.checked));
-        document.querySelectorAll('.trackbox[data-day="'+box.dataset.day+'"]').forEach(b=>{ if(b!==box) b.checked = box.checked; });
-      }catch(e){ console.error('storage error', e); }
-    });
+    box.addEventListener('change', ()=> commitDayBox(box));
   });
+  window.__commitDayBox = commitDayBox;
   loadState();
 })();
 
@@ -1126,6 +1206,33 @@ const EX_DATA = {
   let timerRemaining = 60;
   let timerInterval = null;
   let audioCtx = null;
+  let currentExerciseEl = null;
+
+  function exDoneKey(el){
+    const day = el.closest('.day');
+    const box = day ? day.querySelector('.trackbox') : null;
+    if(!box) return null;
+    return 'exdone:' + CURRENT_WEEK_KEY + ':' + box.dataset.day + ':' + el.dataset.ex;
+  }
+
+  function markExerciseDone(el){
+    if(!el || el.classList.contains('done')) return;
+    el.classList.add('done');
+    const key = exDoneKey(el);
+    if(key){ try{ localStorage.setItem(key, 'true'); }catch(e){} }
+
+    const day = el.closest('.day');
+    if(!day) return;
+    const siblings = day.querySelectorAll('.exercise[data-ex]');
+    const allDone = Array.from(siblings).every(s => s.classList.contains('done'));
+    if(allDone){
+      const box = day.querySelector('.trackbox');
+      if(box && !box.checked){
+        box.checked = true;
+        if(window.__commitDayBox) window.__commitDayBox(box);
+      }
+    }
+  }
 
   function parseDefaultSeconds(detailText){
     if(!detailText) return null;
@@ -1182,6 +1289,7 @@ const EX_DATA = {
       stopInterval();
       timerBox.classList.add('done');
       beep();
+      markExerciseDone(currentExerciseEl);
       return;
     }
     renderTimer();
@@ -1216,9 +1324,10 @@ const EX_DATA = {
     renderTimer();
   }
 
-  function openExercise(key, detailText){
+  function openExercise(key, detailText, sourceEl){
     const data = EX_DATA[key];
     if(!data) return;
+    currentExerciseEl = sourceEl || null;
     iconUse.setAttribute('href', '#icon-ex-' + key);
     titleEl.textContent = data.name;
     whyEl.textContent = data.why;
@@ -1254,10 +1363,14 @@ const EX_DATA = {
     el.appendChild(badge);
     const detailEl = el.querySelector('.ex-detail');
     const detailText = detailEl ? detailEl.textContent : '';
-    el.addEventListener('click', () => openExercise(el.dataset.ex, detailText));
+    el.addEventListener('click', () => openExercise(el.dataset.ex, detailText, el));
     el.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExercise(el.dataset.ex, detailText); }
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExercise(el.dataset.ex, detailText, el); }
     });
+    const key = exDoneKey(el);
+    if(key){
+      try{ if(localStorage.getItem(key) === 'true') el.classList.add('done'); }catch(e){}
+    }
   });
   closeBtn.addEventListener('click', closeExercise);
   overlay.addEventListener('click', (e) => { if(e.target === overlay) closeExercise(); });
@@ -1267,6 +1380,209 @@ const EX_DATA = {
   timerMinus.addEventListener('click', () => adjustTimer(-15));
   timerPlus.addEventListener('click', () => adjustTimer(15));
   timerReset.addEventListener('click', () => resetTimer(timerDefault));
+})();
+
+// --- Trainings-Protokoll: Stunden je Woche/Monat und Typ, mit Soll-Vergleich ---
+(function trainingLog(){
+  const TYPE_META = {
+    rad: {label:'Rad', order:1},
+    kraft: {label:'Kraft', order:2},
+    laufcardio: {label:'Lauf/Cardio', order:3},
+    mobility: {label:'Mobility', order:4}
+  };
+  const BUCKET_ORDER = ['rad','kraft','laufcardio','mobility'];
+
+  function bucketFor(type){
+    if(type === 'lauf' || type === 'cardio') return 'laufcardio';
+    if(type === 'rad' || type === 'kraft' || type === 'mobility') return type;
+    return null; // 'ruhe' and unknown types don't count toward hour totals
+  }
+
+  function computeVariantTotals(){
+    const totals = {in:{}, off:{}};
+    document.querySelectorAll('.season-panel').forEach(panel=>{
+      const season = panel.dataset.season;
+      panel.querySelectorAll('.variant-block').forEach(block=>{
+        const variant = block.dataset.variant;
+        let sum = 0;
+        block.querySelectorAll('.day[data-hours]').forEach(day=>{
+          sum += parseFloat(day.dataset.hours) || 0;
+        });
+        totals[season][variant] = Math.round(sum*100)/100;
+      });
+    });
+    return totals;
+  }
+  const VARIANT_TOTALS = computeVariantTotals();
+
+  function expectedForWeek(year, week){
+    const sv = seasonAndVariantForWeek(year, week);
+    const hours = (VARIANT_TOTALS[sv.season] && VARIANT_TOTALS[sv.season][sv.variant]) || 0;
+    const labels = sv.season === 'in' ? IN_LABELS : OFF_LABELS;
+    return {season: sv.season, variant: sv.variant, label: labels[sv.variant], hours};
+  }
+
+  function getAllLogEntries(){
+    const entries = [];
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(!k || k.indexOf('ck:') !== 0) continue;
+      const raw = localStorage.getItem(k);
+      if(!raw || raw === 'true' || raw === 'false') continue; // legacy entries carry no type/hours
+      let parsed;
+      try{ parsed = JSON.parse(raw); }catch(e){ continue; }
+      if(!parsed || !parsed.checked) continue;
+      const rest = k.slice(3); // "{year}-W{week}:{day}"
+      const sep = rest.lastIndexOf(':');
+      const weekKey = rest.slice(0, sep);
+      const day = rest.slice(sep+1);
+      const m = weekKey.match(/^(\d+)-W(\d+)$/);
+      if(!m) continue;
+      entries.push({
+        weekKey, day,
+        year: parseInt(m[1],10), week: parseInt(m[2],10),
+        type: parsed.type, hours: parsed.hours || 0,
+        date: parsed.date || null
+      });
+    }
+    return entries;
+  }
+
+  function pastWeekKeys(n){
+    const keys = [];
+    const now = new Date();
+    for(let i=0;i<n;i++){
+      const d = new Date(now);
+      d.setDate(d.getDate() - 7*i);
+      const iso = getISOWeek(d);
+      keys.push({year: iso.year, week: iso.week, weekKey: iso.year+'-W'+iso.week});
+    }
+    return keys;
+  }
+
+  function sumByBucket(entries){
+    const sums = {rad:0, kraft:0, laufcardio:0, mobility:0};
+    let total = 0;
+    entries.forEach(e=>{
+      const b = bucketFor(e.type);
+      if(!b) return;
+      sums[b] += e.hours;
+      total += e.hours;
+    });
+    BUCKET_ORDER.forEach(b=> sums[b] = Math.round(sums[b]*100)/100);
+    return {sums, total: Math.round(total*100)/100};
+  }
+
+  function fmtH(h){
+    return (Math.round(h*10)/10).toString().replace('.', ',') + ' Std.';
+  }
+
+  function renderWeekSummary(allEntries){
+    const el = document.getElementById('tl-week-summary');
+    const iso = getISOWeek(new Date());
+    const weekEntries = allEntries.filter(e=> e.weekKey === CURRENT_WEEK_KEY);
+    const {sums, total} = sumByBucket(weekEntries);
+    const expected = expectedForWeek(iso.year, iso.week);
+
+    let statsHtml = '<div class="tl-stats">';
+    BUCKET_ORDER.forEach(b=>{
+      statsHtml += '<div class="tl-stat"><div class="tl-stat-label">'+TYPE_META[b].label+'</div><div class="tl-stat-value">'+fmtH(sums[b])+'</div></div>';
+    });
+    statsHtml += '<div class="tl-stat tl-total"><div class="tl-stat-label">Gesamt diese Woche</div><div class="tl-stat-value">'+fmtH(total)+'</div></div>';
+    statsHtml += '</div>';
+
+    const gap = Math.round((expected.hours - total)*10)/10;
+    let gapHtml;
+    if(expected.hours <= 0){
+      gapHtml = '';
+    } else if(gap > 0.5){
+      gapHtml = '<div class="tl-gap-warn"><b>Rückstand: '+fmtH(gap)+'</b>'+fmtH(total)+' von '+fmtH(expected.hours)+' erledigt ('+expected.label+' vorgeschlagen). Kein Grund zur Panik — schau in der Wochenansicht oben, was noch am ehesten reinpasst.</div>';
+    } else {
+      gapHtml = '<div class="tl-gap-ok"><b>Auf Kurs</b>'+fmtH(total)+' von '+fmtH(expected.hours)+' ('+expected.label+') erledigt.</div>';
+    }
+
+    el.innerHTML = '<p class="variant-note" style="margin:0 0 12px;">Fortschritt dieser Kalenderwoche, live aus deinen abgehakten Einheiten berechnet.</p>' + statsHtml + gapHtml;
+  }
+
+  function renderHistory(allEntries){
+    const el = document.getElementById('tl-history');
+    const weeks = pastWeekKeys(8);
+    const byWeek = {};
+    allEntries.forEach(e=>{
+      (byWeek[e.weekKey] = byWeek[e.weekKey] || []).push(e);
+    });
+
+    let rows = '';
+    weeks.forEach(w=>{
+      const entries = byWeek[w.weekKey] || [];
+      const {sums, total} = sumByBucket(entries);
+      const expected = expectedForWeek(w.year, w.week);
+      const gap = Math.round((expected.hours - total)*10)/10;
+      const isShort = expected.hours > 0 && gap > 0.5;
+      const gapCell = expected.hours <= 0
+        ? '<span class="tl-pill">—</span>'
+        : '<span class="tl-gap-cell '+(isShort?'short':'met')+'">'+(isShort ? '−'+fmtH(gap).replace(' Std.','') : '✓')+'</span>';
+      rows += '<tr>'
+        + '<td class="tl-week-label">KW '+w.week+'<div style="font-weight:400;color:var(--muted);font-size:11px;">'+expected.label+'</div></td>'
+        + '<td>'+fmtH(sums.rad)+'</td>'
+        + '<td>'+fmtH(sums.kraft)+'</td>'
+        + '<td>'+fmtH(sums.laufcardio)+'</td>'
+        + '<td>'+fmtH(sums.mobility)+'</td>'
+        + '<td><b>'+fmtH(total)+'</b></td>'
+        + '<td>'+gapCell+'</td>'
+        + '</tr>';
+    });
+
+    el.innerHTML = '<div class="tl-subheading">Letzte 8 Wochen</div>'
+      + '<div class="tl-table-wrap"><table class="tl-table"><thead><tr>'
+      + '<th>Woche</th><th>Rad</th><th>Kraft</th><th>Lauf/Cardio</th><th>Mobility</th><th>Gesamt</th><th>Soll</th>'
+      + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function renderMonths(allEntries){
+    const el = document.getElementById('tl-months');
+    const byMonth = {};
+    allEntries.forEach(e=>{
+      if(!e.date) return;
+      const ym = e.date.slice(0,7);
+      (byMonth[ym] = byMonth[ym] || []).push(e);
+    });
+    const months = Object.keys(byMonth).sort().reverse().slice(0,4);
+
+    if(months.length === 0){
+      el.innerHTML = '<div class="tl-subheading">Monatsübersicht</div><p class="tl-empty">Noch keine abgehakten Einheiten diesen Monat — sobald du etwas abhakst, taucht es hier auf.</p>';
+      return;
+    }
+
+    const monthNames = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    let rows = '';
+    months.forEach(ym=>{
+      const {sums, total} = sumByBucket(byMonth[ym]);
+      const parts = ym.split('-');
+      const label = monthNames[parseInt(parts[1],10)-1] + ' ' + parts[0];
+      rows += '<tr><td class="tl-week-label">'+label+'</td>'
+        + '<td>'+fmtH(sums.rad)+'</td>'
+        + '<td>'+fmtH(sums.kraft)+'</td>'
+        + '<td>'+fmtH(sums.laufcardio)+'</td>'
+        + '<td>'+fmtH(sums.mobility)+'</td>'
+        + '<td><b>'+fmtH(total)+'</b></td></tr>';
+    });
+
+    el.innerHTML = '<div class="tl-subheading">Monatsübersicht</div>'
+      + '<div class="tl-table-wrap"><table class="tl-table"><thead><tr>'
+      + '<th>Monat</th><th>Rad</th><th>Kraft</th><th>Lauf/Cardio</th><th>Mobility</th><th>Gesamt</th>'
+      + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function renderAll(){
+    const entries = getAllLogEntries();
+    renderWeekSummary(entries);
+    renderHistory(entries);
+    renderMonths(entries);
+  }
+
+  window.renderTrainingLog = renderAll;
+  renderAll();
 })();
 
 // --- PWA: Service Worker registrieren ---
