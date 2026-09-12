@@ -59,6 +59,16 @@
   .variant-tab.active{background:var(--road);color:#fff;border-color:var(--road);}
   .variant-note{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
 
+  .app-tabs-bar{background:var(--card);border-bottom:1px solid var(--line);padding:12px 0;position:sticky;top:0;z-index:10;}
+  .app-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .app-tab{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.03em;
+    text-transform:uppercase;background:var(--paper);color:var(--road);
+    border:1px solid var(--line);border-radius:8px;padding:8px 15px;cursor:pointer;
+  }
+  .app-tab.active{background:var(--road);color:#fff;border-color:var(--road);}
+  .app-tab-panel{padding-top:4px;}
+
   section{padding:22px 0 6px;}
   h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px;display:flex;align-items:center;gap:10px;}
   h2::after{content:"";flex:1;height:1px;background:var(--line);}
@@ -267,7 +277,20 @@
   </div>
 </div>
 
+<div class="app-tabs-bar">
+  <div class="wrap">
+    <div class="app-tabs">
+      <button class="app-tab active" data-apptab="training" onclick="setAppTab('training')">Training</button>
+      <button class="app-tab" data-apptab="protokoll" onclick="setAppTab('protokoll')">Trainingsprotokoll</button>
+      <button class="app-tab" data-apptab="ernaehrung" onclick="setAppTab('ernaehrung')">Ernährung</button>
+      <button class="app-tab" data-apptab="einkaufsliste" onclick="setAppTab('einkaufsliste')">Einkaufsliste</button>
+      <button class="app-tab" data-apptab="rezepte" onclick="setAppTab('rezepte')">Rezepte</button>
+      <button class="app-tab" data-apptab="uebungsliste" onclick="setAppTab('uebungsliste')">Übungsliste</button>
+    </div>
+  </div>
+</div>
 <div class="wrap">
+<div class="app-tab-panel" data-apptab="training">
 
 <!-- ================= SAISON: MAI–SEPTEMBER ================= -->
 <div class="season-panel" data-season="in">
@@ -813,34 +836,18 @@
 
   </section>
 </div>
+</div>
 
+<div class="app-tab-panel" data-apptab="protokoll" style="display:none;">
 <section>
   <h2>Trainings-Protokoll</h2>
   <div id="tl-week-summary"></div>
   <div id="tl-history"></div>
   <div id="tl-months"></div>
 </section>
+</div>
 
-<section>
-  <h2>Berge &amp; Erholung</h2>
-  <details>
-    <summary>Warum Berge speziell (und nicht einfach „fitter werden")</summary>
-    <p>Ein Schnitt von 30 km/h im Training mit 41 km/h Bestzeit im Rennen zeigt: der Motor ist stark — die Bergschwäche liegt fast immer an zu niedriger Trittfrequenz beim Mahlen, zu wenig bergspezifischen Intervallen, oder zu früh ins Rote fahren und vor der Kuppe einbrechen.</p>
-  </details>
-  <details>
-    <summary>Nach-der-Fahrt-Routine (immer, nicht nur bei Muskelkater)</summary>
-    <ul>
-      <li>10 Min lockeres Ausrollen statt abrupt stehen bleiben</li>
-      <li>Waden- und Oberschenkeldehnung</li>
-      <li>Elektrolyte + Eiweiß innerhalb einer Stunde</li>
-    </ul>
-  </details>
-  <details>
-    <summary>Zu den Wadenkrämpfen</summary>
-    <p>Wiederkehrende Wadenkrämpfe bei diesem Trainingsumfang liegen oft eher an Sattel-/Cleat-Position als an der Ernährung — lohnt sich, den Bike-Fit checken zu lassen, wenn das anhält. Auf der Fahrt: ein Elektrolytgetränk ab etwa 90 Minuten, keine plötzlichen harten Antritte an Anstiegen. Wenn die Krämpfe schlimmer werden, lohnt sich ein Check beim Physio.</p>
-  </details>
-</section>
-
+<div class="app-tab-panel" data-apptab="ernaehrung" style="display:none;">
 <section>
   <h2>Ernährung</h2>
   <div class="nutriday">
@@ -861,7 +868,9 @@
     <p class="meal"><b>Danach:</b> sofort die Erholungs-Schüssel, später eine warme Mahlzeit.</p>
   </div>
 </section>
+</div>
 
+<div class="app-tab-panel" data-apptab="einkaufsliste" style="display:none;">
 <section>
   <h2>Einkaufsliste — Aldi &amp; Lidl</h2>
   <div class="shoplist">
@@ -894,7 +903,9 @@
     </ul></div>
   </div>
 </section>
+</div>
 
+<div class="app-tab-panel" data-apptab="rezepte" style="display:none;">
 <section>
   <h2>Rezepte</h2>
   <div class="recipe">
@@ -973,6 +984,30 @@
     </div>
   </div>
 </section>
+</div>
+
+<div class="app-tab-panel" data-apptab="uebungsliste" style="display:none;">
+<section>
+  <h2>Übungsliste</h2>
+  <p class="variant-note" style="margin:0 0 16px;">Alle Übungen aus dem Plan an einem Ort — antippen für Ausführung, Timer und um sie gegen eine Alternative zu tauschen (z. B. wenn Platz oder Ausstattung fehlen).</p>
+  <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin:18px 0 8px;">Beinkraft (einbeinig)</h3>
+  <div class="exercise-list">
+    <div class="exercise ex-lib" data-ex="splitsquat" tabindex="0" role="button"><svg><use href="#icon-ex-splitsquat"/></svg><div><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">Braucht eine Erhöhung (Bank/Stufe/Stuhlkante).</div></div></div>
+    <div class="exercise ex-lib" data-ex="stepup" tabindex="0" role="button"><svg><use href="#icon-ex-stepup"/></svg><div><div class="ex-name">Step-up</div><div class="ex-detail">Braucht eine Erhöhung UND genug Deckenhöhe.</div></div></div>
+    <div class="exercise ex-lib" data-ex="legpress" tabindex="0" role="button"><svg><use href="#icon-ex-legpress"/></svg><div><div class="ex-name">Einbeinige Beinpresse</div><div class="ex-detail">Braucht eine Beinpresse im Fitnessstudio.</div></div></div>
+    <div class="exercise ex-lib" data-ex="cossack" tabindex="0" role="button"><svg><use href="#icon-ex-cossack"/></svg><div><div class="ex-name">Cossack Squat</div><div class="ex-detail">Kein Gerät, kein Platzbedarf nach oben.</div></div></div>
+    <div class="exercise ex-lib" data-ex="curtsy" tabindex="0" role="button"><svg><use href="#icon-ex-curtsy"/></svg><div><div class="ex-name">Curtsy Lunge</div><div class="ex-detail">Kein Gerät, ebenerdig.</div></div></div>
+    <div class="exercise ex-lib" data-ex="glutebridge" tabindex="0" role="button"><svg><use href="#icon-ex-glutebridge"/></svg><div><div class="ex-name">Einbeinige Gesäßbrücke</div><div class="ex-detail">Kein Gerät, liegend — auch bei wenig Platz/Deckenhöhe.</div></div></div>
+    <div class="exercise ex-lib" data-ex="pistol" tabindex="0" role="button"><svg><use href="#icon-ex-pistol"/></svg><div><div class="ex-name">Assistierte Pistolenkniebeuge</div><div class="ex-detail">Kein Gerät, nur ein Türrahmen o. Ä. zum Festhalten.</div></div></div>
+  </div>
+  <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin:18px 0 8px;">Mobility &amp; Dehnung</h3>
+  <div class="exercise-list">
+    <div class="exercise ex-lib" data-ex="hip" tabindex="0" role="button"><svg><use href="#icon-ex-hip"/></svg><div><div class="ex-name">Hüftbeuger-Dehnung</div><div class="ex-detail">Kein Gerät.</div></div></div>
+    <div class="exercise ex-lib" data-ex="calf" tabindex="0" role="button"><svg><use href="#icon-ex-calf"/></svg><div><div class="ex-name">Waden-Dehnung</div><div class="ex-detail">Kein Gerät.</div></div></div>
+    <div class="exercise ex-lib" data-ex="spine" tabindex="0" role="button"><svg><use href="#icon-ex-spine"/></svg><div><div class="ex-name">BWS-Rotation</div><div class="ex-detail">Kein Gerät.</div></div></div>
+  </div>
+</section>
+</div>
 
 </div>
 
@@ -1079,9 +1114,21 @@ function setVariant(season, variant){
   panel.querySelectorAll('.variant-tab').forEach(b=> b.classList.toggle('active', b.dataset.variant===variant));
 }
 
+function setAppTab(tab){
+  document.querySelectorAll('.app-tab-panel').forEach(p=> p.style.display = (p.dataset.apptab===tab ? '' : 'none'));
+  document.querySelectorAll('.app-tab').forEach(b=> b.classList.toggle('active', b.dataset.apptab===tab));
+  try{ localStorage.setItem('activeAppTab', tab); }catch(e){}
+  window.scrollTo(0, 0);
+}
+
 let CURRENT_WEEK_KEY = '';
 
 (function init(){
+  let savedTab = null;
+  try{ savedTab = localStorage.getItem('activeAppTab'); }catch(e){}
+  const validTabs = ['training','protokoll','ernaehrung','einkaufsliste','rezepte','uebungsliste'];
+  setAppTab(validTabs.includes(savedTab) ? savedTab : 'training');
+
   const now = new Date();
   const month = now.getMonth()+1;
   const inSeason = (month>=5 && month<=9);
@@ -1503,7 +1550,7 @@ function applyEffectiveExercise(el){
   }
 
   document.querySelectorAll('.exercise[data-ex]').forEach(el => {
-    applyEffectiveExercise(el);
+    if(!el.classList.contains('ex-lib')) applyEffectiveExercise(el);
     const badge = document.createElement('span');
     badge.className = 'ex-info';
     badge.textContent = 'i';
